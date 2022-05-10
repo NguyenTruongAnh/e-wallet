@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="/css/client/login.css">
+
+<div class="client-login">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-4 offset-xl-4">
+                <div class="client-login__wrapper">
+                    <h2 class="client-login__title">Đăng nhập</h2>
+                    <form id="client-submit-form" class="client-login__form needs-validation" novalidate>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" required
+                                placeholder="Nhập tên tài khoản">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập tên tài khoản!
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password" required
+                                placeholder="Nhập mật khẩu">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập mật khẩu!
+                            </div>
+                        </div>
+                        <div class="client-login__form-control">
+                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                            <div>
+                                <span>Hoặc</span>
+                            </div>
+                            <a href="/register" type="button" class="btn btn-dark">Đăng ký tài khoản</a>
+                            <div class="d-flex justify-content-center mt-4">
+                                <a href="/recovery">Quên mật khẩu?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const form = document.getElementById("client-submit-form")
+
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+</script>
