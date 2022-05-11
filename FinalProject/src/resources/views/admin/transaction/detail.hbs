@@ -1,0 +1,166 @@
+<div class="transaction-detail">
+    <h2 class="transaction-detail__title">
+        Chi tiết giao dịch
+    </h2>
+    <a href="/admin/transactions" class="d-inline-block mb-2">Quay lại</a>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            {{!-- Thông tin giao dịch --}}
+            <div class="col-lg-6">
+                <h5>Thông tin giao dịch</h5>
+                <div class="form-row transaction-detail__info">
+                    <div class="col-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Mã giao dịch:</label>
+                            <span>
+                                000001
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Ngày thực hiện:</label>
+                            <span>10/05/2022</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Số tiền:</label>
+                            <span>12.000.000đ</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Phí giao dịch:</label>
+                            <span>50.000đ</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Loại giao dịch:</label>
+                            <span>Chuyển tiền</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Tình trạng:</label>
+                            <span class="text-secondary"><b>Chờ duyệt</b></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Mã thẻ tín dụng:</label>
+                            <span>11111111</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Số điện thoại người nhận:</label>
+                            <span>0344881929</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Lời nhắn:</label>
+                            <textarea name="" id="" rows="3">Xin chào</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Thông tin người thực hiện --}}
+            <div class="col-lg-4">
+                <h5>Thông tin tài khoản</h5>
+                <div class="form-row transaction-detail__user">
+                    <div class="col-12">
+                        <div class="form-group mb-2 d-flex justify-content-between flex-md-row flex-column">
+                            <label class="font-weight-bold" style="min-width: 120px">Mã tài khoản:</label>
+                            <span>
+                                <a href="/admin/accounts/51900000" class=""><b>51900000</b></a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2 d-flex justify-content-between flex-md-row flex-column">
+                            <label class="font-weight-bold" style="min-width: 120px">Họ và tên:</label>
+                            <span> Nguyễn Võ Hoàng Vũ</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2 d-flex justify-content-between flex-md-row flex-column">
+                            <label class="font-weight-bold" style="min-width: 120px">Email:</label>
+                            <span>hoangvu@gmail.com</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2 d-flex justify-content-between flex-md-row flex-column">
+                            <label class="font-weight-bold" style="min-width: 120px">Số điện thoại:</label>
+                            <span>0999999999</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{!-- Nếu đang chờ duyệt thì render ra --}}
+                <div class="transaction-detail__control d-flex justify-content-center mt-4 mb-2">
+                    <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                        data-target="#transaction-detail__modal" data-type="confirm">Xác nhận</button>
+                    <button type="button" class="mx-2 btn btn-danger" data-toggle="modal"
+                        data-target="#transaction-detail__modal" data-type="cancel">Từ chối</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Modal Message --}}
+<div class="modal fade" id="transaction-detail__modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transaction-detail__modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="transaction-detail__modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const transactionDetailModalMessage = $('#transaction-detail__modal')
+    const transactionDetailModalTitle = $('#transaction-detail__modal-title')
+    const transactionDetailModalBodyMessage = $('#transaction-detail__modal-message')
+
+    transactionDetailModalMessage.on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget)
+            const type = button.data('type')
+            let title
+            let message
+            
+            switch(type) {
+                case 'confirm':
+                    title = 'Xác nhận giao dịch'
+                    message = 'Bạn muốn xác nhận giao dịch 000001?'
+                    break
+                case 'cancel':
+                    title = 'Từ chối giao dịch'
+                    message = 'Bạn muốn từ chối giao dịch 000001?'
+                    break
+                default:
+                    title = ''
+                    message = ''
+            }
+
+            transactionDetailModalTitle.html(title)
+            transactionDetailModalBodyMessage.html(message)
+
+        })
+</script>
