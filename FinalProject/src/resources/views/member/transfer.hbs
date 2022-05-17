@@ -1,0 +1,119 @@
+<div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title"><i class="fa fa-fw fa-file"></i> Chuyển tiền tiền </h2>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Chuyển tiền</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="mb-0">Chuyển tiền</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <form name="" class="needs-validation" novalidate="" onsubmit="otp()">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="sodt">Số điện thoại</label>
+                                                        <input id="sodt" type="number" class="form-control" placeholder="Nhập số điện thoại cần chuyển" required="" onChange="validate()">
+														<p class="text-danger" id="sodtkhople"></p>
+														<p class="text-success" id="sodthople"></p>
+                                                    </div>
+													<div class="col-md-6 mb-3">
+                                                        <label for="sotien">Số tiền</label>
+                                                        <input type="number" class="form-control" placeholder="Nhập số tiền cần chuyển" required="">
+														<p id="sothevalidate"></p>
+                                                    </div>
+													
+													
+													<div class="col-md-6 mb-3">
+                                                        <label for="hoten">Họ tên:</label>
+                                                        <input id="hoten" type="text" class="form-control" placeholder="Nguyễn Văn A" required="" readonly>
+                                                    </div>
+													
+													<div class="col-md-12 mb-3">
+                                                        <label for="ghichu">Ghi chú</label>
+                                                        <input type="text" class="form-control" placeholder="Nhập nội dung ghi chú" required="">
+                                                    </div>
+													<div class="col-md-12 mb-3">
+                                                        Phí giao dịch: 1000đ (5% số tiền chuyển khoản)
+                                                    </div>
+													
+													
+													
+													
+													<div class="form-check ">
+													  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+													  <label class="form-check-label" for="flexCheckDefault">
+														Người gửi trả phí
+													  </label>
+													</div>	
+                                                <div class="form-group row text-right">
+                                                    <div class="col col-sm-10 col-lg-12 offset-lg-0">
+                                                        <button type="submit" class="btn btn-space btn-primary">Chuyển tiền</button>
+                                                        <button class="btn btn-space btn-secondary">Hủy</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+			
+
+            
+        </div>
+    </div>
+	
+	
+	<script>
+		function validate() {
+		  let x = document.getElementById("sodt").value;
+		  if (x.length!=10) {
+			let text1;
+			text1 = "Số điện thoại không đúng định dạng";
+			document.getElementById("sodtkhople").innerHTML = text1;
+			document.getElementById("sodthople").innerHTML =""
+		  }
+		  else{
+			let text1;
+			text1 = "Số điện thoại hợp lệ";
+			document.getElementById("sodtkhople").innerHTML =""
+			document.getElementById("sodthople").innerHTML = text1;
+		  }
+		}
+		
+	</script>
+	<script type="text/javascript">
+    function otp() {
+        var name = prompt('Nhập mã OTP');
+		if (name<100000 | name>999999){
+			alert('OTP không hợp lệ');
+			}
+	}
+	
+	</script>

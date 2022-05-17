@@ -46,4 +46,36 @@ router.get('/admin/transactions/:id', function(req, res, next) {
   res.render('admin/transaction/detail.hbs', { layout: 'main2', active: 'active--transaction' })
 })
 
+router.get('/member/card', function(req, res, next) {
+  res.render('member/card.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/deposit-form', function(req, res, next) {
+  res.render('member/deposit-form.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/detailtransaction', function(req, res, next) {
+  res.render('member/detailtransaction.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/index', function(req, res, next) {
+  res.render('member/index.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/profile', function(req, res, next) {
+  res.render('member/profile.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/transactionhistory', function(req, res, next) {
+  res.render('member/transactionhistory.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/transfer', function(req, res, next) {
+  res.render('member/transfer.hbs', { layout: 'memberlayout' })
+})
+
+router.get('/member/withdraw', function(req, res, next) {
+  res.render('member/withdraw.hbs', { layout: 'memberlayout' })
+})
+
 module.exports = router;
