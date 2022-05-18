@@ -1,0 +1,143 @@
+<div class="dashboard-wrapper member-deposit">
+    <div class="container-fluid  dashboard-content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title"><i class="fa fa-fw fa-file"></i> Nạp tiền </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="member-deposit__form" class="needs-validation" novalidate>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label for="member-deposit__form-card-id">Số thẻ:</label>
+                                            <input id="member-deposit__form-card-id" type="number" class="form-control"
+                                                placeholder="Nhập số thẻ của quý khách (6 số)" required />
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập mã thẻ
+                                            </div>
+                                            <p class="d-none text-danger" id="member-deposit__form-card-id-invalid">Số
+                                                thẻ phải gồm 6 số</p>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label for="member-deposit__form-card-cvv">Mã CVV:</label>
+                                            <input id="member-deposit__form-card-cvv" type="number" class="form-control"
+                                                placeholder="Nhập CVV" required />
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập mã CVV
+                                            </div>
+                                            <p class="d-none text-danger" id="member-deposit__form-card-cvv-invalid">Mã
+                                                CVV gồm 3 chữ số</p>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label for="member-deposit__form-card-date">Ngày hết hạn:</label>
+                                            <input type="date" id="member-deposit__form-card-date" class="form-control"
+                                                placeholder="" required>
+                                            <div class="invalid-feedback">
+                                                Vui lòng chọn ngày hết hạn của thẻ
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label for="member-deposit__form-money">Số tiền:</label>
+                                            <input type="number" id="member-deposit__form-money" class="form-control"
+                                                placeholder="Nhập số tiền cần nạp" required>
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập số tiền cần rút
+                                            </div>
+                                            <p class="d-none text-danger" id="member-deposit__form-money-invalid">Số
+                                                tiền phải lớn hơn 0</p>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-end mt-4">
+                                                <button type="submit" class="btn btn-space btn-success">
+                                                    Xác nhận
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const memberDepositForm = document.getElementById("member-deposit__form")
+        const memberDepositInputCardId = $('#member-deposit__form-card-id')
+        const memberDepositInputCardCVV = $('#member-deposit__form-card-cvv')
+        const memberDepositInputMoney = $('#member-deposit__form-money')
+
+        let checkMemberDepositCardId = false // Cờ kiểm tra số thẻ đúng định dạng chưa trước khi submit
+        let checkMemberDepositCardCVV = false
+        let checkMemberDepositMoney = false
+
+        // Sự kiện gửi form lên
+        memberDepositForm.addEventListener('submit', function (event) {
+            event.preventDefault()
+            event.stopPropagation()
+            if (memberDepositForm.checkValidity() === false) {
+                memberDepositForm.classList.add('was-validated')
+            } else {
+                memberDepositForm.classList.remove('was-validated')
+
+                if (checkMemberDepositCardId && checkMemberDepositCardCVV && checkMemberDepositMoney) {
+                    // Tiến hành xử lý form gửi lên
+                    console.log('Nạp tiền thành công')
+                    memberDepositForm.reset()
+                }
+            }
+        }, false)
+
+        // Bắt sự kiện thay đổi của thẻ input Số thẻ
+        memberDepositInputCardId.change(function () {
+            const value = parseInt(memberDepositInputCardId.val())
+
+            if (!value || value < 100000 || value > 999999) {
+                $('#member-deposit__form-card-id-invalid').removeClass('d-none')
+                checkMemberDepositCardId = false
+            } else {
+                $('#member-deposit__form-card-id-invalid').addClass('d-none')
+                checkMemberDepositCardId = true
+            }
+        })
+
+        // Bắt sự kiện thay đổi của thẻ input Mã CVV
+        memberDepositInputCardCVV.change(function () {
+            const value = parseInt(memberDepositInputCardCVV.val())
+
+            if (!value || value < 100 || value > 999) {
+                $('#member-deposit__form-card-cvv-invalid').removeClass('d-none')
+                checkMemberDepositCardCVV = false
+            } else {
+                $('#member-deposit__form-card-cvv-invalid').addClass('d-none')
+                checkMemberDepositCardCVV = true
+            }
+        })
+
+        // Bắt sự kiện số tiền nạp thay đổi
+        memberDepositInputMoney.change(function () {
+            const value = parseInt(memberDepositInputMoney.val())
+
+            if (!value || value <= 0) {
+                $('#member-deposit__form-money-invalid').removeClass('d-none')
+                checkMemberDepositMoney = false
+            } else {
+                $('#member-deposit__form-money-invalid').addClass('d-none')
+                checkMemberDepositMoney = true
+            }
+        })
+    })
+</script>

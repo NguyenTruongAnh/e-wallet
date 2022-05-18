@@ -1,0 +1,751 @@
+a {
+  color: #00B7FF;
+}
+
+/* Reset Password */
+.reset-password {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/login.jpg');
+  background-size: cover;
+}
+
+.reset-password__wrapper {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 70px 80px;
+  border-radius: 12px;
+}
+
+.reset-password__title {
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+.reset-password__form {
+  width: 100%;
+}
+
+.reset-password__form input {
+  margin-bottom: 12px;
+}
+
+.reset-password__form-control button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.reset-password__form-control span {
+  display: inline-block;
+  z-index: 100;
+  font-size: 14px;
+}
+
+/* Register */
+.register {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/login.jpg');
+  background-size: cover;
+}
+
+.register__wrapper {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 40px;
+  border-radius: 12px;
+}
+
+.register__title {
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.register__form {
+  width: 100%;
+}
+
+.register__form-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.register__form-card-wrapper img {
+  width: 260px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.register__form-card-wrapper label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translatey(-50%);
+}
+
+.register__form-card-wrapper label i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.register__form-card-wrapper label i:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.register__form-control {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* Recovery  */
+.recovery {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/login.jpg');
+  background-size: cover;
+}
+
+.recovery__wrapper {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 70px 80px;
+  border-radius: 12px;
+}
+
+.recovery__title {
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+.recovery__form {
+  width: 100%;
+}
+
+.recovery__form input {
+  margin-bottom: 12px;
+}
+
+.recovery__form-control button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.recovery__form-control span {
+  display: inline-block;
+  z-index: 100;
+  font-size: 14px;
+}
+
+
+/* Recovery 2 */
+.recovery2 {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/login.jpg');
+  background-size: cover;
+}
+
+.recovery2__wrapper {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 70px 80px;
+  border-radius: 12px;
+}
+
+.recovery2__title {
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+.recovery2__form {
+  width: 100%;
+}
+
+.recovery2__form input {
+  margin-bottom: 12px;
+}
+
+.recovery2__form-control button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.recovery2__form-control span {
+  display: inline-block;
+  z-index: 100;
+  font-size: 14px;
+}
+
+
+/* Login */
+.login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/login.jpg');
+  background-size: cover;
+}
+
+.login__wrapper {
+  background-color: #fff;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 80px;
+  border-radius: 12px;
+}
+
+.login__title {
+  text-transform: uppercase;
+  margin-bottom: 80px;
+}
+
+.login__form {
+  width: 100%;
+}
+
+.login__form input {
+  margin-bottom: 24px;
+}
+
+.login__form-control button,
+.login__form-control a:nth-child(3) {
+  width: 100%;
+}
+
+.login__form-control div:nth-child(2) {
+  width: 100%;
+  overflow: hidden;
+  margin: 8px 0;
+  text-align: center;
+  position: relative;
+}
+
+.login__form-control div:nth-child(2):before {
+  display: block;
+  content: "";
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  right: calc(50% + 30px);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+
+}
+
+.login__form-control div:nth-child(2)::after {
+  display: block;
+  content: "";
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  left: calc(50% + 30px);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+
+}
+
+.login__form-control span {
+  display: inline-block;
+  z-index: 100;
+  font-size: 14px;
+}
+
+
+/* Admin */
+/* Admin Header */
+.admin-header {
+  height: 60px;
+  width: 100%;
+  background-color: #c3e8fa;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.admin-header__left,
+.admin-header__right {
+  display: flex;
+  align-items: center;
+}
+
+.admin-header__logo {
+  display: flex;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+}
+
+.admin-header__logo:hover {
+  color: blue;
+  text-decoration: none;
+}
+
+.admin-header__logo>img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.admin-header__logo>span {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Admin Sitebar */
+.admin-sitebar {
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 8px #6cceff;
+  margin-bottom: 24px;
+}
+
+.admin-sitebar__title {
+  margin: 0;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+}
+
+.admin-sitebar__list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.admin-sitebar__wrapper.active--account .admin-sitebar__title--account a,
+.admin-sitebar__wrapper.active--transaction .admin-sitebar__title--transaction a {
+  background-color: #47b6ed;
+  color: #fff;
+}
+
+.admin-sitebar__item a {
+  display: block;
+  padding: 4px 12px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+  color: #333;
+  text-decoration: none;
+}
+
+.admin-sitebar__item:hover a {
+  background-color: #6cceff !important;
+  color: #fff !important;
+}
+
+.admin-sitebar__item.active>a {
+  color: #fff;
+}
+
+.admin-sitebar__item>a>i {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+/* ------ Quản lý tài khoản ------ */
+/* Admin Accounts */
+.account {}
+
+.account-title {
+  margin-bottom: 24px;
+}
+
+.account-filters {
+  list-style: none;
+  padding: 0;
+}
+
+#account-status-select {
+  padding: 4px 12px;
+  outline: none;
+  border: 1px solid #6cceff;
+  border-radius: 4px;
+}
+
+#account-table.active .account-table__item-status {
+  color: #28a745;
+}
+
+#account-table.wait-active .account-table__item-status {
+  color: #6c757d;
+}
+
+#account-table.lock .account-table__item-status {
+  color: #dc3545;
+}
+
+#account-table.disable .account-table__item-status {
+  color: #ffc107;
+}
+
+/* Admin Account Detail */
+.account-detail__title {
+  margin-bottom: 12px;
+}
+
+.account-detail__info {
+  padding: 16px;
+}
+
+.account-detail__info span {
+  display: block;
+  padding: 4px 12px;
+  border: 1px solid #6cceff;
+  border-radius: 12px;
+}
+
+.account-detail__info img {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  max-height: 250px;
+  object-fit: fill;
+}
+
+.account-table__item.transfer .icon--transfer,
+.account-table__item.recharge .icon--recharge,
+.account-table__item.withdraw .icon--withdraw,
+.account-table__item.receive .icon--receive,
+.account-table__item.payment .icon--payment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-table__item i {
+  display: none;
+  width: 20px;
+  height: 20px;
+}
+
+/* ------ Quản lý giao dịch ------ */
+/* Admin transactions */
+.transaction {}
+
+.transaction-title {
+  margin-bottom: 24px;
+}
+
+/* Admin Transaction Detail */
+.transaction-detail__title {
+  margin-bottom: 12px;
+}
+
+.transaction-detail__user {
+  padding: 12px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+}
+
+.transaction-detail__info span,
+.transaction-detail__info textarea {
+  display: block;
+  width: 100%;
+  padding: 4px 12px;
+  border: 1px solid #6cceff;
+  border-radius: 12px;
+}
+
+/* Member */
+/* Member Header */
+.member-header {
+  height: 60px;
+  width: 100%;
+  background-color: #c3e8fa;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.member-header__logo:hover {
+  color: blue;
+  text-decoration: none;
+}
+
+.member-header__logo {
+  display: flex;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+}
+
+.member-header__logo > img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.member-header__logo > span {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Member Sitebar */
+.member-sitebar {
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 8px #6cceff;
+  margin-bottom: 24px;
+}
+
+.member-sitebar__title {
+  margin: 0;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+}
+
+.member-sitebar__list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.member-sitebar__item a {
+  display: block;
+  padding: 4px 12px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+  color: #333;
+  text-decoration: none;
+}
+
+.member-sitebar__item:hover a {
+  background-color: #6cceff !important;
+  color: #fff !important;
+}
+
+.member-sitebar__item.active > a {
+  color: #fff;
+}
+
+.member-sitebar__item > a > i {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+/* Member Profile */
+.member-profile {
+
+}
+
+.member-profile__info span {
+  display: block;
+  padding: 4px 12px;
+  border: 1px solid #6cceff;
+  border-radius: 12px;
+}
+
+.member-profile__info .form-group img {
+  display: block;
+  width: 100%;
+}
+
+.member-profile__form-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.member-profile__form-card-wrapper img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.member-profile__form-card-wrapper label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translatey(-50%);
+}
+
+.member-profile__form-card-wrapper label i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.member-profile__form-card-wrapper label i:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.member-profile__form-control {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Member Transactions */
+
+/* Member Transaction Detail */
+.member-transaction-detail span,
+.member-transaction-detail textarea {
+  display: block;
+  width: 100%;
+  padding: 4px 12px;
+  border: 1px solid #6cceff;
+  border-radius: 12px;
+}
+
+/* Member Card */
+.member-card__network {
+  margin: 4px 12px;
+}
+
+.member-card__network img {
+  width: 120px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.member-card__network label {
+  border: 2px solid #888;
+  padding: 4px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.member-card__network input[type="radio"]:checked + label {
+  border: 2px solid red;
+} 
+
+
+/* Fix cứng cột đầu của bảng khi responsive */
+th {
+  background-color: white;
+}
+
+th:first-child,
+td:first-child {
+  position: sticky;
+  left: 0px;
+
+}
+
+td:first-child {
+  background-color: white;
+}
+
+/* Mobile and Tablet */
+@media (max-width: 1023px) {
+
+  /* Reset Password */
+  .reset-password__wrapper {
+    padding: 60px;
+  }
+
+
+  /* Recovery */
+  .recovery__wrapper {
+    padding: 60px;
+  }
+
+  /* Recovery2 */
+  .recovery2__wrapper {
+    padding: 60px;
+  }
+
+
+  /* Login */
+  .login__wrapper {
+    padding: 60px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 740px) and (max-width: 1023px) {}
+
+/* Mobile */
+@media (max-width: 739px) {
+
+  /* Reset Password */
+  .reset-password__wrapper {
+    padding: 60px 20px;
+  }
+
+
+  /* Register */
+  .register__wrapper {
+    padding: 40px 12px;
+  }
+
+  .register__form-card-wrapper img {
+    width: 100%;
+  }
+
+  /* Recovery */
+  .recovery__wrapper {
+    padding: 60px 20px;
+  }
+
+  /* Recovery2 */
+  .recovery2__wrapper {
+    padding: 60px 20px;
+  }
+
+  /* Login */
+  .login__wrapper {
+    padding: 60px 20px;
+  }
+
+  /* Admin */
+  .account-title {
+    font-size: 24px;
+  }
+
+  .account-detail__title {
+    font-size: 24px;
+  }
+}
