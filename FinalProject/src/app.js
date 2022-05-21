@@ -15,6 +15,7 @@ app.engine(
   handlebars.engine({
       extname: '.hbs',
       helpers: {
+
           sum: (a, b) => a + b,
           formatMoney: (a) => {
               const formatter = new Intl.NumberFormat('vi-VN')

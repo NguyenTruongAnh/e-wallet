@@ -53,7 +53,8 @@
                                         <label for="register__form-file1">
                                             <i class="fa-solid fa-camera"></i>
                                         </label>
-                                        <div class="invalid-feedback">
+                                   
+                                        <div style="color: red;">
                                             Vui lòng tải ảnh mặt trước CMND/CCCD
                                         </div>
                                     </div>
@@ -70,7 +71,7 @@
                                         <label for="register__form-file2">
                                             <i class="fa-solid fa-camera"></i>
                                         </label>
-                                        <div class="invalid-feedback">
+                                        <div style="color: red;">
                                             Vui lòng tải ảnh mặt sau CMND/CCCD
                                         </div>
                                     </div>
@@ -110,7 +111,7 @@
 
         // Sự kiện thêm ảnh mặt trước
         fileInput1.addEventListener('change', function (e) {
-            if (fileInput1.files.lenght !== 0) {
+            if (fileInput1.files.length !== 0) {
                 const file = e.target.files[0]
                 const reader = new FileReader()
 
@@ -124,7 +125,7 @@
 
         // Sự kiện thêm ảnh mặt sau
         fileInput2.addEventListener('change', function (e) {
-            if (fileInput2.files.lenght !== 0) {
+            if (fileInput2.files.length !== 0) {
                 const file = e.target.files[0]
                 const reader = new FileReader()
 

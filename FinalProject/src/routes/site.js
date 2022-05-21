@@ -10,7 +10,7 @@ router.get('/login', function(req, res, next) {
     res.render('login.hbs', { layout: 'main3' })
 })
 
-router.get('/register', function(req, res, next) {
+router.get('/member/register', function(req, res, next) {
   res.render('register.hbs', { layout: 'main3' })
 })
 
