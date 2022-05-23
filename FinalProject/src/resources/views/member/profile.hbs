@@ -1,122 +1,187 @@
-  <div class="dashboard-wrapper">
-            <div class="container-fluid  dashboard-content">
-                <!-- ============================================================== -->
-                <!-- pageheader -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="page-header">
-                            <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i> Thông tin cá nhân </h2>
-                            <div class="page-breadcrumb">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Thông tin khách hàng</a></li>
-                                    </ol>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
+<div class="dashboard-wrapper member-profile">
+    <div class="container-fluid  dashboard-content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title"><i class="fa fa-fw fa-user"></i> Thông tin tài khoản </h2>
                 </div>
-                <!-- ============================================================== -->
-                <!-- end pageheader -->
-                <!-- ============================================================== -->
-                <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="mb-0">Thông tin cá nhân</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form id="submit-form" class="needs-validation" novalidate="">
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="firstName">Họ</label>
-                                                        <input type="text" class="form-control" placeholder="" value="" required="">
-														<div class="invalid-feedback">
-															Vui lòng nhập Họ của quý khách
-														</div>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="lastName">Tên</label>
-                                                        <input type="text" class="form-control" placeholder="" value="" required="">
-														<div class="invalid-feedback">
-															Vui lòng nhập Tên của quý khách
-														</div>
-                                                    </div>
-                                                    <div class="col-md-12 mb-3">
-                                                        <label for="lastName">Email</label>
-                                                        <input type="text" class="form-control" placeholder="" value="" required="">
-														<div class="invalid-feedback">
-															Vui lòng nhập Email của quý khách
-														</div>
-                                                    </div>
-                                                    <div class="col-md-12 mb-3">
-                                                        <label for="lastName">Số điện thoại</label>
-                                                        <input type="text" class="form-control" placeholder="" value="" required="">
-														<div class="invalid-feedback">
-															Vui lòng nhập Số điện thoại của quý khách
-														</div>
-                                                    </div>
-													
-													<div class="col-12">
-														<div class="form-group mb-2">
-															<label class="font-weight-bold">CMND/CCCD mặt trước:</label>
-															<img src="C:\Users\TUAN\Downloads\iNetTutor.com - Digital-Wallet-Solution\Digital-Wallet-Solution\member\images\CCCD.png" alt="CMND/CCCD" style="height: 100px; weight:200px>
-														</div>
-													</div>
-													
-													<div class="col-12">
-														<div class="form-group mb-2">
-															<label class="font-weight-bold">CMND/CCCD mặt sau  :   </label>
-															<img src="C:\Users\TUAN\Downloads\iNetTutor.com - Digital-Wallet-Solution\Digital-Wallet-Solution\member\images\CCCD_sau.png" alt="CMND/CCCD" style="height: 100px; weight:200px">
-														</div>
-													</div>
-													
-                                                </div>
-                                                
-                                                <div class="form-group row text-right">
-                                                    <div class="col col-sm-10 col-lg-12 offset-lg-0">
-                                                        <button type="submit" class="btn btn-space btn-primary">Update</button>
-                                                        <button class="btn btn-space btn-secondary">Cancel</button>
-                                                    </div>
-                                                </div>
-												
-                                            </form>
-                                        </div>
-                                    </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                {{!-- Thẻ chứa thông tin tài khoản --}}
+                <div class="card member-profile__info">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Họ và tên:</label>
+                                    <span>Nguyễn Võ Hoàng Vũ</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Ngày sinh:</label>
+                                    <span>01/03/2001</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Email:</label>
+                                    <span>hoangvu@gmail.com</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Số điện thoại:</label>
+                                    <span>0999999999</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Mã tài khoản:</label>
+                                    <span>1234</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Tên tài khoản:</label>
+                                    <span>hoangvu</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Tình trạng:</label>
+                                    <span>Kích hoạt</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Số dư tài khoản:</label>
+                                    <span>1.000.000.000đ</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Ảnh CMND/CCCD (trước):</label>
+                                    <img src="/images/CCCD.png" alt="CMND/CCCD">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-2">
+                                    <label class="font-weight-bold">Ảnh CMND/CCCD (sau):</label>
+                                    <img src="/images/CCCD_sau.png" alt="CMND/CCCD">
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                {{!-- Thẻ chứa form dùng để bổ sung thông tin --}}
+                <div class="card mt-3 member-profile__update">
+                    <div class="card-header">
+                        <h4 class="mb-0 text-danger">Bổ sung CMND/CCCD</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="member-profile__submit-form" class="needs-validation member-profile__form" novalidate>
+                            <div class="form-row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group member-profile__form-card">
+                                        <label class="mb-2 font-weight-bold">Ảnh CMND/CCCD (trước):</label>
+                                        <div class="member-profile__form-card-wrapper">
+                                            <img id="member-profile__form-view1" src="/images/image-default.jpg"
+                                                alt="Image">
+                                            <input type="file" class="form-control d-none"
+                                                id="member-profile__form-file1" accept="image/*" required
+                                                placeholder="Họ và tên">
+                                            <label for="member-profile__form-file1">
+                                                <i class="fa-solid fa-camera"></i>
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                Vui lòng tải ảnh mặt trước CMND/CCCD
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="col-12 col-lg-6">
+                                    <div class="form-group member-profile__form-card">
+                                        <label class="mb-2 font-weight-bold">Ảnh CMND/CCCD (sau):</label>
+                                        <div class="member-profile__form-card-wrapper">
+                                            <img id="member-profile__form-view2" src="/images/image-default.jpg"
+                                                alt="Image">
+                                            <input type="file" class="form-control d-none"
+                                                id="member-profile__form-file2" accept="image/*" required
+                                                placeholder="Họ và tên">
+                                            <label for="member-profile__form-file2">
+                                                <i class="fa-solid fa-camera"></i>
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                Vui lòng tải ảnh mặt sau CMND/CCCD
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="member-profile__form-control">
+                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            
         </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- end main wrapper -->
-    <!-- ============================================================== -->
-    <!-- Optional JavaScript -->
-    <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <script src="../assets/vendor/multi-select/js/jquery.multi-select.js"></script>
-    <script src="../assets/libs/js/main-js.js"></script>
-	
-	<script>
-    $(document).ready(function () {
-        const form = document.getElementById("submit-form")
+</div>
 
-        form.addEventListener('submit', function (event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault()
-                event.stopPropagation()
+<script>
+    $(document).ready(function () {
+        const memberProfileForm = document.getElementById("member-profile__submit-form")
+        const memberProfileFileInput1 = document.getElementById('member-profile__form-file1')
+        const memberProfileFileInput2 = document.getElementById('member-profile__form-file2')
+        const memberProfileImageView1 = document.getElementById('member-profile__form-view1')
+        const memberProfileImageView2 = document.getElementById('member-profile__form-view2')
+
+        memberProfileForm.addEventListener('submit', function (event) {
+            event.preventDefault()
+            event.stopPropagation()
+            if (memberProfileForm.checkValidity() === false) {
+                memberProfileForm.classList.add('was-validated')
+            } else {
+                memberProfileForm.classList.remove('was-validated')
             }
-            form.classList.add('was-validated')
         }, false)
+
+        // Sự kiện thêm ảnh mặt trước
+        memberProfileFileInput1.addEventListener('change', function (e) {
+            if (memberProfileFileInput1.files.lenght !== 0) {
+                const file = e.target.files[0]
+                const reader = new FileReader()
+
+                reader.onload = function (e) {
+                    memberProfileImageView1.setAttribute('src', e.target.result)
+                }
+
+                reader.readAsDataURL(file)
+            }
+        })
+
+        // Sự kiện thêm ảnh mặt sau
+        memberProfileFileInput2.addEventListener('change', function (e) {
+            if (memberProfileFileInput2.files.lenght !== 0) {
+                const file = e.target.files[0]
+                const reader = new FileReader()
+
+                reader.onload = function (e) {
+                    memberProfileImageView2.setAttribute('src', e.target.result)
+                }
+
+                reader.readAsDataURL(file)
+            }
+        })
     })
 </script>

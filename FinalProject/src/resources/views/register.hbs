@@ -1,17 +1,16 @@
-<link rel="stylesheet" href="/css/register.css">
-
 <div class="register">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-lg-8 col-md-10 offset-md-1 col-lg-10 offset-lg-1 col-xl-6 offset-xl-3">
                 <div class="register__wrapper">
                     <h2 class="register__title">Đăng ký</h2>
-                    <form id="submit-form" class="register__form needs-validation" novalidate>
+                    <form id="submit-form" method="POST" action="/register" enctype="multipart/form-data"
+                        class="register__form needs-validation" novalidate>
                         <div class="form-row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <input type="number" class="form-control" id="phone" required
-                                        placeholder="Số điện thoại">
+                                        placeholder="Số điện thoại" name="phone">
                                     <div class="invalid-feedback">
                                         Vui lòng nhập số điện thoại!
                                     </div>
@@ -19,7 +18,8 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" id="email" required placeholder="Email">
+                                    <input type="email" class="form-control" id="email" required 
+                                        placeholder="Email" name="email">
                                     <div class="invalid-feedback">
                                         Vui lòng nhập email!
                                     </div>
@@ -27,7 +27,8 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="name" required placeholder="Họ và tên">
+                                    <input type="text" class="form-control" id="name" required 
+                                        placeholder="Họ và tên" name="name">
                                     <div class="invalid-feedback">
                                         Vui lòng nhập họ và tên!
                                     </div>
@@ -36,9 +37,18 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <input type="date" class="form-control" id="birthdate" required
-                                        placeholder="Họ và tên">
+                                        placeholder="Ngày sinh" name="birthday">
                                     <div class="invalid-feedback">
                                         Vui lòng chọn ngày sinh!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="name" required 
+                                        placeholder="Địa chỉ" name="address">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập địa chỉ!
                                     </div>
                                 </div>
                             </div>
@@ -49,12 +59,11 @@
                                         <img id="register__form-view1" src="/images/image-default.jpg"
                                             alt="Image">
                                         <input type="file" class="form-control d-none" id="register__form-file1"
-                                            accept="image/*" required placeholder="Họ và tên">
+                                            accept="image/*" required placeholder="CCCD mặt trước" name="idphoto1">
                                         <label for="register__form-file1">
                                             <i class="fa-solid fa-camera"></i>
                                         </label>
-                                   
-                                        <div style="color: red;">
+                                        <div class="invalid-feedback">
                                             Vui lòng tải ảnh mặt trước CMND/CCCD
                                         </div>
                                     </div>
@@ -67,11 +76,11 @@
                                         <img id="register__form-view2" src="/images/image-default.jpg"
                                             alt="Image">
                                         <input type="file" class="form-control d-none" id="register__form-file2"
-                                            accept="image/*" required placeholder="Họ và tên">
+                                            accept="image/*" required placeholder="CCCD mặt sau" name="idphoto2">
                                         <label for="register__form-file2">
                                             <i class="fa-solid fa-camera"></i>
                                         </label>
-                                        <div style="color: red;">
+                                        <div class="invalid-feedback">
                                             Vui lòng tải ảnh mặt sau CMND/CCCD
                                         </div>
                                     </div>
@@ -111,7 +120,7 @@
 
         // Sự kiện thêm ảnh mặt trước
         fileInput1.addEventListener('change', function (e) {
-            if (fileInput1.files.length !== 0) {
+            if (fileInput1.files.lenght !== 0) {
                 const file = e.target.files[0]
                 const reader = new FileReader()
 
@@ -125,7 +134,7 @@
 
         // Sự kiện thêm ảnh mặt sau
         fileInput2.addEventListener('change', function (e) {
-            if (fileInput2.files.length !== 0) {
+            if (fileInput2.files.lenght !== 0) {
                 const file = e.target.files[0]
                 const reader = new FileReader()
 

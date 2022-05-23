@@ -1,7 +1,7 @@
 const Account = require('../models/Account')
 const { mutipleMongooseToObject } = require('../../util/mongoose')
 
-class MemberController {
+class UserController {
     
     // [GET] /card
     getCard(req, res, next) {
@@ -38,10 +38,21 @@ class MemberController {
         res.render('member/password.hbs', { layout: 'memberlayout' })
     }
 
+    // [GET] /logout
+    logout(req, res, next) {
+        req.session.destroy(err => {
+            if(err)
+                return res.redirect('/')
+            
+            res.clearCookie('AVAT')
+            res.redirect('/login')
+        })
+    }
+
     // [GET] /
     index(req, res, next) {
         res.render('member/profile.hbs', { layout: 'memberlayout' })
     }
 }
 
-module.exports = new MemberController();
+module.exports = new UserController();

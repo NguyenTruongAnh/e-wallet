@@ -4,10 +4,18 @@ var path = require('path');
 var handlebars = require('express-handlebars');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var flash = require('express-flash');
+var session = require('express-session')
+
 
 var app = express();
 
 var route = require('./routes')
+
+var db = require('./config/db')
+
+// Connect to Database
+db.connect()
 
 // view engine setup
 app.engine(
@@ -15,7 +23,6 @@ app.engine(
   handlebars.engine({
       extname: '.hbs',
       helpers: {
-
           sum: (a, b) => a + b,
           formatMoney: (a) => {
               const formatter = new Intl.NumberFormat('vi-VN')
@@ -37,9 +44,17 @@ app.set('views', path.join(__dirname, 'resources' ,'views'))
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser('Cookie Secret', { maxAge: null }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    name: 'AVAT',
+    secret: 'AVAT wallet!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 },
+}));
+app.use(flash());
 
 route(app)
 

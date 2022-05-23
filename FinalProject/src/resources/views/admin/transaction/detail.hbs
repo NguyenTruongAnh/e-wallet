@@ -9,7 +9,7 @@
             <div class="col-lg-6">
                 <h5>Thông tin giao dịch</h5>
                 <div class="form-row transaction-detail__info">
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Mã giao dịch:</label>
                             <span>
@@ -17,7 +17,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Ngày thực hiện:</label>
                             <span>10/05/2022</span>
@@ -47,6 +47,48 @@
                             <span class="text-secondary"><b>Chờ duyệt</b></span>
                         </div>
                     </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Nhà mạng:</label>
+                            <span>Viettel</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Loại thẻ:</label>
+                            <span>10.000đ</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Số lượng:</label>
+                            <span class="text-secondary">1</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Thông tin thẻ:</label>
+                            <div class="table-responsive">
+                                <table id="member-card__result-table" class="table table-striped table-bordered second"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã thẻ</th>
+                                            <th>Nhà mạng</th>
+                                            <th>Giá tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="member-card__result-table-body">
+                                        <tr>
+                                            <td>111100001</td>
+                                            <td>Viettel</td>
+                                            <td>100.000đ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Mã thẻ tín dụng:</label>
@@ -62,7 +104,7 @@
                     <div class="col-12">
                         <div class="form-group mb-2">
                             <label class="font-weight-bold">Lời nhắn:</label>
-                            <textarea name="" id="" rows="3">Xin chào</textarea>
+                            <textarea name="" id="" rows="3" readonly>Xin chào</textarea>
                         </div>
                     </div>
                 </div>
@@ -140,27 +182,27 @@
     const transactionDetailModalBodyMessage = $('#transaction-detail__modal-message')
 
     transactionDetailModalMessage.on('show.bs.modal', function (event) {
-            let button = $(event.relatedTarget)
-            const type = button.data('type')
-            let title
-            let message
-            
-            switch(type) {
-                case 'confirm':
-                    title = 'Xác nhận giao dịch'
-                    message = 'Bạn muốn xác nhận giao dịch 000001?'
-                    break
-                case 'cancel':
-                    title = 'Từ chối giao dịch'
-                    message = 'Bạn muốn từ chối giao dịch 000001?'
-                    break
-                default:
-                    title = ''
-                    message = ''
-            }
+        let button = $(event.relatedTarget)
+        const type = button.data('type')
+        let title
+        let message
 
-            transactionDetailModalTitle.html(title)
-            transactionDetailModalBodyMessage.html(message)
+        switch (type) {
+            case 'confirm':
+                title = 'Xác nhận giao dịch'
+                message = 'Bạn muốn xác nhận giao dịch 000001?'
+                break
+            case 'cancel':
+                title = 'Từ chối giao dịch'
+                message = 'Bạn muốn từ chối giao dịch 000001?'
+                break
+            default:
+                title = ''
+                message = ''
+        }
 
-        })
+        transactionDetailModalTitle.html(title)
+        transactionDetailModalBodyMessage.html(message)
+
+    })
 </script>
