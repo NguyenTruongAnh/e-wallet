@@ -11,8 +11,6 @@ router.get('/',(req,res)=>{
 const recoveryValidation = [
     check('email').exists().withMessage('Vui lòng nhập email đã đăng ký').notEmpty().withMessage('Không được để trống email').isEmail().withMessage('Email không hợp lệ'),
     check('phone').exists().withMessage('Vui lòng nhập số điện thoại đã đăng ký').notEmpty().withMessage('Không được để trống số điện thoại').isLength({max: 10, min:10}).withMessage('Số điện thoại không hợp lệ')
-
-
 ]
 router.post('/recovery',recoveryValidation,(req,res)=>{
     let result = validationResult(req)
