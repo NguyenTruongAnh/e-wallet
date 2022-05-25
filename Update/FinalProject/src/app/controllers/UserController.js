@@ -5,37 +5,37 @@ class UserController {
     
     // [GET] /card
     getCard(req, res, next) {
-        res.render('member/card.hbs', { layout: 'memberlayout' })
+        res.render('user/card.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /deposit
     getDeposit(req, res, next) {
-        res.render('member/deposit.hbs', { layout: 'memberlayout' })
+        res.render('user/deposit.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /transactions/:id
     getTransactionById(req, res, next) {
-        res.render('member/detailtransaction.hbs', { layout: 'memberlayout' })
+        res.render('user/detailtransaction.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /transactions
     getTransactions(req, res, next) {
-        res.render('member/transactionhistory.hbs', { layout: 'memberlayout' })
+        res.render('user/transactionhistory.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /transfer
     getTransfer(req, res, next) {
-        res.render('member/transfer.hbs', { layout: 'memberlayout' })
+        res.render('user/transfer.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /withdraw
     getWithdraw(req, res, next) {
-        res.render('member/withdraw.hbs', { layout: 'memberlayout' })
+        res.render('user/withdraw.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /change-password
     getChangePassword(req, res, next) {
-        res.render('member/password.hbs', { layout: 'memberlayout' })
+        res.render('user/password.hbs', { layout: 'userLayout' })
     }
 
     // [GET] /logout
@@ -51,7 +51,7 @@ class UserController {
 
     // [GET] /
     index(req, res, next) {
-        res.render('member/profile.hbs', { layout: 'memberlayout' })
+        res.render('user/profile.hbs', { layout: 'userLayout' })
     }
 }
 

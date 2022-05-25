@@ -1,10 +1,10 @@
 const siteRouter = require('./site')
 const adminRouter = require('./admin')
-const memberRouter = require('./member')
+const userRouter = require('./user')
 
 function route(app) {
     app.use('/admin/', adminRouter)
-    app.use('/', siteRouter, memberRouter)
+    app.use('/', siteRouter, userRouter)
 
     app.use((req, res) => {
         res.status(404)

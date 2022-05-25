@@ -2,8 +2,9 @@ const Account = require('../models/Account')
 const User = require('../models/User')
 const { mutipleMongooseToObject } = require('../../util/mongoose')
 const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer')
-const { createPassword, createUsername } = require('../../util/random')
+const transporter = require('../../config/mail/transporter')
+const { createRandomString, createRandomNumber } = require('../../lib/random')
+
 class SiteController {
     // [GET] /login
     login(req, res) {
@@ -162,8 +163,8 @@ class SiteController {
 
 
         const salt = bcrypt.genSaltSync(10)
-        const username = createUsername()
-        const password = createPassword()
+        const username = createRandomNumber(10)
+        const password = createRandomString(6)
         const password_hash = bcrypt.hashSync(password, salt)
         req.body.imgFront = req.files['idphoto1'][0].filename
         req.body.imgBack = req.files['idphoto2'][0].filename
@@ -171,32 +172,9 @@ class SiteController {
         user.save()
             .catch(() => res.redirect('back'))
 
-        const account = new Account({ username, password: password_hash, phone })
+        const account = new Account({ username, password: password_hash, phone, email })
         account.save()
             .catch(() => res.redirect('back'))
-
-        // const transporter = nodemailer.createTransport({
-        //     service: 'gmail',
-        //     host: "mail.phongdaotao.com",
-        //     port: 25,
-        //     secure: false, 
-        //     auth: {
-        //         user: "sinhvien@phongdaotao.com",
-        //         pass: "svtdtu",
-        //     },
-        //     tls: { rejectUnauthorized: false },
-        // });
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            host: "hoangvunguyen01@gmail.com",
-            port: 25,
-            secure: false, 
-            auth: {
-                user: "hoangvunguyen01@gmail.com",
-                pass: "hoangvu01",
-            },
-            tls: { rejectUnauthorized: false },
-        });
 
         const mailOptions = {
             from: 'hoangvunguyen01@gmail.com',
@@ -204,6 +182,7 @@ class SiteController {
             subject: 'Tài khoản ví điện tử AVAT',
             text: `Chúc mừng bạn đã tạo tài khoản thành công. Tên tài khoản của bạn là ${username} với mật khẩu ${password}`
         }
+
         transporter.sendMail(mailOptions, (error, info) => {
             if(error) {
                 console.log(error)

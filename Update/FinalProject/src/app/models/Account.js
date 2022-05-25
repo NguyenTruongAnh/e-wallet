@@ -14,7 +14,8 @@ const Account = new Schema(
         amount: { type: Number, default: 0 },
         blockTime: { type: Date }, // thời hạn hết khóa 1 phút
         blockDate: { type: Date }, // thời gian
-        phone:{ type: String }
+        phone:{ type: String },
+        email:{ type: String },
     },
     {
         timestamps: true,
