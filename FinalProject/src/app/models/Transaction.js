@@ -9,9 +9,10 @@ const Transaction = new Schema(
         amount: { type: Number, required: true },
         note: { type: String },
         fee: { type: Number, default: 0 },
-        typeCardPhone: { type: Number, default: 10000 },
-        numberCardPhone: { type: Number, default: 1},
-        phone: { type: String }
+        typeCardPhone: { type: Number},
+        numberCardPhone: { type: Number},
+        phone: { type: String },
+        status: {type: String,default:'approved'} //approved, pending, declined
     },
     {
         timestamps: true,

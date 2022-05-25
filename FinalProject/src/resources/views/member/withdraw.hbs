@@ -14,53 +14,48 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="member-withdraw__form" class="needs-validation" novalidate>
+                                <form id="member-withdraw__form" class="needs-validation" action="/withdraw" method="post">
                                     <div class="row">
                                         <div class="col-md-6 mb-2">
                                             <label for="member-withdraw__form-card-id">Số thẻ:</label>
                                             <input id="member-withdraw__form-card-id" type="number" class="form-control"
-                                                placeholder="Nhập số thẻ của quý khách (6 số)" required />
-                                            <div class="invalid-feedback">
-                                                Vui lòng nhập mã thẻ
-                                            </div>
-                                            <p class="d-none text-danger" id="member-withdraw__form-card-id-invalid">Số
-                                                thẻ phải gồm 6 số</p>
+                                                placeholder="Nhập số thẻ của quý khách (6 số)" name="idCard" />
+                                        
                                         </div>
                                         <div class="col-md-6 mb-2">
                                             <label for="member-withdraw__form-card-cvv">Mã CVV:</label>
                                             <input id="member-withdraw__form-card-cvv" type="number" class="form-control"
-                                                placeholder="Nhập CVV" required />
-                                            <div class="invalid-feedback">
-                                                Vui lòng nhập mã CVV
-                                            </div>
-                                            <p class="d-none text-danger" id="member-withdraw__form-card-cvv-invalid">Mã
-                                                CVV gồm 3 chữ số</p>
+                                                placeholder="Nhập CVV" name="cvv" />
+                                          
                                         </div>
                                         <div class="col-md-6 mb-2">
                                             <label for="member-withdraw__form-card-date">Ngày hết hạn:</label>
                                             <input type="date" id="member-withdraw__form-card-date" class="form-control"
-                                                placeholder="" required>
-                                            <div class="invalid-feedback">
-                                                Vui lòng chọn ngày hết hạn của thẻ
-                                            </div>
+                                                placeholder="" name="expireDate">
+                                     
                                         </div>
 
                                         <div class="col-md-6 mb-2">
                                             <label for="member-withdraw__form-money">Số tiền:</label>
                                             <input type="number" id="member-withdraw__form-money" class="form-control"
-                                                placeholder="Nhập số tiền cần nạp" required>
-                                            <div class="invalid-feedback">
-                                                Vui lòng nhập số tiền cần rút
-                                            </div>
-                                            <p class="d-none text-danger" id="member-withdraw__form-money-invalid">Số
-                                                tiền phải lớn hơn 0</p>
+                                                placeholder="Nhập số tiền cần rút" name="amount">
+                                           
                                         </div>
 
                                         <div class="col-md-12 mb-2">
                                             <label for="member-withdraw__form-note">Ghi chú:</label>
-                                            <textarea name="" id="member-withdraw__form-note" class="w-100 px-2" cols="30" placeholder="Ghi chú"></textarea>
+                                            <textarea name="note" id="member-withdraw__form-note" class="w-100 px-2" cols="30" placeholder="Ghi chú"></textarea>
                                         </div>
-
+                                             {{#if error}} 
+                                        <div class="form-group col-md-12 mt-3">
+                                                <div class="alert alert-danger alert-dismissible fade show">
+                                                    <button type="button" class="close" data-dismiss="alert">
+                                                        &times;
+                                                    </button>
+                                                    {{error}}
+                                                </div>
+                                            </div>
+                                            {{/if}}  
                                         <div class="col-12">
                                             <div class="d-flex justify-content-end mt-4">
                                                 <button type="submit" class="btn btn-space btn-success">
@@ -79,71 +74,4 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        const memberWithdrawForm = document.getElementById("member-withdraw__form")
-        const memberWithdrawInputCardId = $('#member-withdraw__form-card-id')
-        const memberWithdrawInputCardCVV = $('#member-withdraw__form-card-cvv')
-        const memberWithdrawInputMoney = $('#member-withdraw__form-money')
 
-        let checkMemberWithdrawCardId = false // Cờ kiểm tra số thẻ đúng định dạng chưa trước khi submit
-        let checkMemberWithdrawCardCVV = false
-        let checkMemberWithdrawMoney = false
-
-        // Sự kiện gửi form lên
-        memberWithdrawForm.addEventListener('submit', function (event) {
-            event.preventDefault()
-            event.stopPropagation()
-            if (memberWithdrawForm.checkValidity() === false) {
-                memberWithdrawForm.classList.add('was-validated')
-            } else {
-                memberWithdrawForm.classList.remove('was-validated')
-
-                if (checkMemberWithdrawCardId && checkMemberWithdrawCardCVV && checkMemberWithdrawMoney) {
-                    // Tiến hành xử lý form gửi lên
-                    console.log('Nạp tiền thành công')
-                    memberWithdrawForm.reset()
-                }
-            }
-        }, false)
-
-        // Bắt sự kiện thay đổi của thẻ input Số thẻ
-        memberWithdrawInputCardId.change(function () {
-            const value = parseInt(memberWithdrawInputCardId.val())
-
-            if (!value || value < 100000 || value > 999999) {
-                $('#member-withdraw__form-card-id-invalid').removeClass('d-none')
-                checkMemberWithdrawCardId = false
-            } else {
-                $('#member-withdraw__form-card-id-invalid').addClass('d-none')
-                checkMemberWithdrawCardId = true
-            }
-        })
-
-        // Bắt sự kiện thay đổi của thẻ input Mã CVV
-        memberWithdrawInputCardCVV.change(function () {
-            const value = parseInt(memberWithdrawInputCardCVV.val())
-
-            if (!value || value < 100 || value > 999) {
-                $('#member-withdraw__form-card-cvv-invalid').removeClass('d-none')
-                checkMemberWithdrawCardCVV = false
-            } else {
-                $('#member-withdraw__form-card-cvv-invalid').addClass('d-none')
-                checkMemberWithdrawCardCVV = true
-            }
-        })
-
-        // Bắt sự kiện số tiền nạp thay đổi
-        memberWithdrawInputMoney.change(function () {
-            const value = parseInt(memberWithdrawInputMoney.val())
-
-            if (!value || value <= 0) {
-                $('#member-withdraw__form-money-invalid').removeClass('d-none')
-                checkMemberWithdrawMoney = false
-            } else {
-                $('#member-withdraw__form-money-invalid').addClass('d-none')
-                checkMemberWithdrawMoney = true
-            }
-        })
-    })
-</script>

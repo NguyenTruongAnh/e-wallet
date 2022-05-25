@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { body, validationResult } = require('express-validator')
+const { body, validationResult,check } = require('express-validator')
 const siteController = require('../app/controllers/SiteController')
 const { checkAuth, checkAuth2 } = require('../app/middlewares/checkLogin')
 const multer = require('multer');
+const Account = require('../app/models/Account')
+const User = require('../app/models/User')
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "src/public/images/users");
@@ -86,8 +88,80 @@ router.get('/register',checkAuth2, siteController.register)
 
 router.get('/recovery',checkAuth2, siteController.recovery)
 
+const recoveryValidation = [
+    check('email').exists().withMessage('Vui lòng nhập email đã đăng ký').notEmpty().withMessage('Không được để trống email').isEmail().withMessage('Email không hợp lệ'),
+    check('phone').exists().withMessage('Vui lòng nhập số điện thoại đã đăng ký').notEmpty().withMessage('Không được để trống số điện thoại').isLength({max: 10, min:10}).withMessage('Số điện thoại đúng định dạng')
+]
+router.post('/recovery',recoveryValidation,(req,res)=>{
+    let result = validationResult(req)
+        const {phone, email} = req.body
+        if(result.errors.length === 0){
+            User.findOne({email : email},(err,user)=>{
+                if(err)
+                console.log(err)
+                if(!user){
+                    req.flash('phone','')
+                    req.flash('email','')
+                    req.flash('error','Tài khoản không tồn tài')
+                    return res.redirect('/recovery') 
+                }else{
+                    if(user.phone !== phone){
+                        req.flash('phone','')
+                        req.flash('email',email)
+                        req.flash('error','Số điện thoại không chính xác')
+                        return res.redirect('/recovery') 
+                    }else{
+                        Account.findOne({phone: phone},(err,account)=>{
+                            if(err)
+                            console.log(err)
+                            if(account.status == 3){
+                                req.flash('error', 'Tài khoản này đã bị vô hiệu hóa, hiện không thể sử dụng được chức năng này.')
+                                return res.redirect('/recovery') 
+                            }
+                            //pass
+                          
+                            req.session.email = email
+                            req.session.phone = phone
+                            req.session.sent = true
+                            req.flash('flash', {
+                                type: 'success',
+                                intro: 'Thành công!',
+                                message: `Vui lòng check email để nhận được mã OTP.` 
+                            })
+                            return res.redirect('/recovery2')
+                        })
+                       
+                    }
+                }
+            })
+        }else{
+            result = result.mapped()
+            let message = ''
+            for(fields in result){
+                message = result[fields].msg
+                break;
+            }
+            req.flash('phone',phone)
+            req.flash('email',email)
+            req.flash('error',message)
+            return res.redirect('/recovery') 
+        }
+})
+router.get('/recovery-failed',recoveryValidation,(req,res)=>{
+    req.flash('flash', {
+        type: 'danger',
+        intro: 'Thất bại!',
+        message: `Xác thực thất bại.`
+    })
+    return res.redirect('/recovery')
+})
+
 router.get('/recovery2',checkAuth2, siteController.recovery2)
 
+router.post('/recovery2',checkAuth2, siteController.Recovery2)
+
 router.get('/reset-password', checkAuth, siteController.resetPassword)
+
+router.post('/reset-password', checkAuth, siteController.postResetPassword)
 
 module.exports = router;

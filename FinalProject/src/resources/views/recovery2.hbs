@@ -3,29 +3,52 @@
         <div class="row">
             <div class="col-12 col-lg-8 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-4 offset-xl-4">
                 <div class="recovery2__wrapper">
-                    <h2 class="recovery2__title">Quên mật khẩu</h2>
-                    <form id="submit-form" class="recovery2__form needs-validation" novalidate>
+                    <h2 class="recovery2__title">Quên mật khẩu {{port}}</h2>
+                    <form id="submit-form" class="recovery2__form needs-validation" method="post" action="/recovery2">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="username" required
+                            <input type="text" class="form-control"  name="otp"
                                 placeholder="Mã OTP">
                             <div class="invalid-feedback">
                                 Vui lòng nhập mã OTP!
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" required
+                            {{#if remain}} 
+                            <div class="text-primary">
+                                Mã xác thực OTP sẽ hết hạn trong <span id="counter">{{remain}}</span> giây nữa.
+                            </div>
+                            {{else}}
+                            <div class="text-primary">
+                                Mã xác thực OTP sẽ hết hạn trong <span id="counter">60</span> giây nữa.
+                            </div>
+                            {{/if}}
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password"
                                 placeholder="Mật khẩu mới">
                             <div class="invalid-feedback">
                                 Vui lòng nhập mật khẩu mới!
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" required
+                            <input type="password" class="form-control" name="cfPassword"
                                 placeholder="Xác thực mật khẩu">
                             <div class="invalid-feedback">
                                 Vui lòng xác thực mật khẩu!
                             </div>
                         </div>
+                        {{#if error}} 
+                           <div class="form-group">
+								<div class="alert alert-danger alert-dismissible fade show">
+									<button type="button" class="close" data-dismiss="alert">
+										&times;
+									</button>
+									{{error}}
+								</div>
+							</div>
+                            {{/if}}
+                        <input type="number" name="remain" value="{{remain}}" hidden id="counter-var">
                         <div class="recovery2__form-control">
                             <button type="submit" class="btn btn-primary">Xác nhận</button>
                         </div>
@@ -37,6 +60,29 @@
 </div>
 
 <script>
+    let counter = document.getElementById('counter');
+      let count = 0;
+        let wait = 60 
+      
+      if(parseInt(counter.innerHTML) < 60){
+        wait = parseInt(counter.innerHTML)
+      }
+        
+      let counterVar = document.getElementById('counter-var')
+        let remain = 0 
+      let id = setInterval(() => {
+        count++;
+        
+        remain = wait - count;
+        counterVar.value = remain
+        if(remain>=0){
+          counter.innerHTML = remain;
+        }else {
+          clearInterval(id)
+          window.location.href='/recovery-failed'
+        }
+      }, 1000);
+
     $(document).ready(function () {
         const form = document.getElementById("submit-form")
 

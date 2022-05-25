@@ -1,9 +1,11 @@
 const Account = require('../models/Account')
+const {check, validationResult} = require('express-validator');
 const User = require('../models/User')
 const { mutipleMongooseToObject } = require('../../util/mongoose')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
-const { createPassword, createUsername } = require('../../util/random')
+const mailingOptions = require('../../config/mail/option')
+const { createPassword, createUsername,createOTP } = require('../../util/random')
 class SiteController {
     // [GET] /login
     login(req, res) {
@@ -67,11 +69,11 @@ class SiteController {
                         return req.redirect('back')
                     })
                 if (account.isChangeDefaultPassword) {
-                    req.flash('flash', {
-                        type: 'success',
-                        intro: 'Thành công!',
-                        message: 'Đăng nhập thành công.'
-                    })
+                    // req.flash('flash', {
+                    //     type: 'success',
+                    //     intro: 'Thành công!',
+                    //     message: 'Đăng nhập thành công.'
+                    // })
                     return res.redirect('/')
                 } else {
                     req.flash('flash', {
@@ -79,9 +81,10 @@ class SiteController {
                         intro: 'Thông báo!',
                         message: 'Vui lòng đổi sang mật khẩu mới!'
                     })
-
+                    req.session.phoneToChangPW = account.phone
                     return res.redirect('/reset-password')
                 }
+               
             } else {
                 if(!account.isAdmin) {
                     if(account.invalidLoginTime && account.wrongPasswordTime === 2) {
@@ -164,37 +167,17 @@ class SiteController {
         account.save()
             .catch(() => res.redirect('back'))
 
-        // const transporter = nodemailer.createTransport({
-        //     service: 'gmail',
-        //     host: "mail.phongdaotao.com",
-        //     port: 25,
-        //     secure: false, 
-        //     auth: {
-        //         user: "sinhvien@phongdaotao.com",
-        //         pass: "svtdtu",
-        //     },
-        //     tls: { rejectUnauthorized: false },
-        //   });
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            host: "hoangvunguyen01@gmail.com",
-            port: 25,
-            secure: false, 
-            auth: {
-                user: "hoangvunguyen01@gmail.com",
-                pass: "hoangvu01",
-            },
-            tls: { rejectUnauthorized: false },
-          });
-
+        
+        const transporter = nodemailer.createTransport(mailingOptions);
         const mailOptions = {
             from: 'Ví điện tử AVAT',
             to: email,
             subject: 'Tài khoản ví điện tử AVAT',
-            text: `Chúc mừng bạn đã tạo tài khoản thành công. Tên tài khoản của bạn là ${username} với mật khẩu ${password}`
+            html: `<p>Chúc mừng bạn đã tạo tài khoản thành công. Tên tài khoản của bạn là <b>${username}</b> với mật khẩu <b>${password}</b></p>`
         }
         transporter.sendMail(mailOptions, (error, info) => {
             if(error) {
+                console.log(error)
                 req.flash('flash', {
                     type: 'danger',
                     intro: 'Thông báo!',
@@ -213,18 +196,145 @@ class SiteController {
 
     // [GET] /reset-password
     resetPassword(req, res) {
+     
         const flash = req.flash('flash') || ''
-        res.render('reset-password.hbs', { layout: 'emptyLayout', flash: flash[0] })
+        res.render('reset-password.hbs', { layout: 'emptyLayout', flash: flash[0], error : req.flash('error') })
     }
+    postResetPassword(req,res){
+        const {password, cfPassword} = req.body
+        if(!password){
+            req.flash('error','Vui lòng nhập mật khẩu mới.') 
+            return res.redirect('/reset-password')
+        }
+        if(!cfPassword){
+            req.flash('error','Vui lòng nhập mật khẩu xác nhận.') 
+            return res.redirect('/reset-password')
+        }
+        if(!password.length >= 6){
+            req.flash('error','Mật khẩu mới phải có độ dài trên 6 kí tự.') 
+            return res.redirect('/reset-password')
+        }
+        if(!cfPassword.length >= 6){
+            req.flash('error','Mật khẩu xác nhận phải có độ dài trên 6 kí tự.') 
+            return res.redirect('/reset-password')
+        }
+        if(password !== cfPassword){
+            req.flash('error','Mật khẩu xác nhận không khớp.') 
+            return res.redirect('/reset-password')
+        }
+        const phone =  req.session.phoneToChangPW
+        const password_hash = bcrypt.hashSync(password, 10)
+        Account.updateOne({phone: phone},{$set :{password : password_hash, status : 1, isChangeDefaultPassword: true}},(err)=>{
+            if(err)
+            console.log(err)
 
+                req.session.account.isChangeDefaultPassword = true
+                req.session.phone = null
+                return res.redirect('/')
+            
+            
+        })
+        
+    }
     // [GET] /recovery
     recovery(req, res) {
-        res.render('recovery.hbs', { layout: 'emptyLayout' })
+        const email = req.flash('email')
+        const phone = req.flash('phone')
+        const flash = req.flash('flash') || ''
+        const error = req.flash('error')
+        res.render('recovery.hbs', { layout: 'emptyLayout', phone: phone, email: email, error: error,flash: flash[0]})
     }
+
 
     // [GET] /recovery2
     recovery2(req, res) {
-        res.render('recovery2.hbs', { layout: 'emptyLayout' })
+        if(!req.session.sent){
+            return res.redirect('/recovery')
+        }
+        const flash = req.flash('flash') || ''
+        const email = req.session.email
+        const otp = createOTP()
+        req.session.otp = otp
+        const transporter = nodemailer.createTransport(mailingOptions);
+        const mailOptions = {
+            from: 'Ví điện tử AVAT',
+            to: email,
+            subject: 'Mã OTP khôi phục mật khẩu ví điện tử AVAT',
+            html: `<p>Mã OTP khôi phục mật khẩu của bạn là <b>${otp}</b>. Mã sẽ hết hạn trong vòng <b>1 phút</b>`
+        }
+        transporter.sendMail(mailOptions, (error, info) => {
+            if(error) {
+                console.log(error)
+                req.flash('flash', {
+                    type: 'danger',
+                    intro: 'Thông báo!',
+                    message: `Something wrong.`
+                })
+            }
+            req.flash('flash', {
+                type: 'success',
+                intro: 'Thành công!',
+                message: `Vui lòng check email để nhận được mã OTP.`
+            })
+            
+        })
+        res.render('recovery2.hbs', { layout: 'emptyLayout', flash: flash[0] })
+    }
+
+    async Recovery2(req,res){
+        const {otp, remain, password, cfPassword} = req.body
+        const email =  req.session.email 
+        const phone =  req.session.phone 
+
+        req.session.sent = false
+        const flash = req.flash('flash') || ''
+
+        if(otp !== req.session.otp){
+            req.flash('error', 'Mã OTP không chính xác.')
+            return res.render('recovery2.hbs', { layout: 'emptyLayout', error: req.flash('error'), remain: remain })
+        }
+        if(!password){
+            req.flash('error', 'Vui lòng nhập mật khẩu mới.')
+            return res.render('recovery2.hbs', { layout: 'emptyLayout', error: req.flash('error'), remain: remain })
+        }
+        if(!cfPassword){
+            req.flash('error', 'Vui lòng nhập mật khẩu xác nhận.')
+            return res.render('recovery2.hbs', { layout: 'emptyLayout', error: req.flash('error'), remain: remain })
+        }
+        if(password.length  != cfPassword.length){
+            req.flash('error', 'Mật khẩu xác nhận không chính xác.')
+            return res.render('recovery2.hbs', { layout: 'emptyLayout', error: req.flash('error'), remain: remain })
+        }
+        if(password.length < 6 || cfPassword.length < 6){
+            req.flash('error', 'Mật khẩu mới phải dài hơn 6 kí tự.')
+            return res.render('recovery2.hbs', { layout: 'emptyLayout', error: req.flash('error'), remain: remain })
+        }
+        if(password != cfPassword){
+            req.flash('error', 'Mật khẩu xác nhận không chính xác.')
+            return res.render('recovery2.hbs', { layout: 'emptyLayout', error: req.flash('error'), remain: remain })
+        }
+       
+        const account = await Account.findOne({phone : phone})
+
+        if(account.status == 0 || account.status == 1){
+  
+            const password_hash = bcrypt.hashSync(password, 10)
+            Account.updateOne({phone: phone},{$set :{password : password_hash, status : 1,isChangeDefaultPassword: true}},(err)=>{
+                if(err)
+                console.log(err)
+
+    
+                    req.session.otp = null
+                    req.session.email = null
+                    req.session.phone = null
+                    return res.redirect('/login')
+                
+                
+            })
+
+        }
+        
+      
     }
 
 }

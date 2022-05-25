@@ -21,6 +21,7 @@ db.connect()
 app.engine(
   'hbs',
   handlebars.engine({
+    defaultLayout: "emptyLayout",
       extname: '.hbs',
       helpers: {
           sum: (a, b) => a + b,

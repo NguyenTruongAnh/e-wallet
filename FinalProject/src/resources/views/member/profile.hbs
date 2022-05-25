@@ -7,7 +7,13 @@
                 </div>
             </div>
         </div>
-
+          {{#if flash}}
+                        <div class="alert alert-dismissible alert-{{flash.type}}" >
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>{{flash.intro}} </strong>{{{flash.message}}}
+                        </div>
+                        {{/if}}
+        
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                 {{!-- Thẻ chứa thông tin tài khoản --}}
@@ -17,61 +23,61 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Họ và tên:</label>
-                                    <span>Nguyễn Võ Hoàng Vũ</span>
+                                    <span>{{name}}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Ngày sinh:</label>
-                                    <span>01/03/2001</span>
+                                    <span>{{dob}}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Email:</label>
-                                    <span>hoangvu@gmail.com</span>
+                                    <span>{{email}}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Số điện thoại:</label>
-                                    <span>0999999999</span>
+                                    <span>{{phone}}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Mã tài khoản:</label>
-                                    <span>1234</span>
+                                    <span>{{id}}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Tên tài khoản:</label>
-                                    <span>hoangvu</span>
+                                    <span>{{username}}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Tình trạng:</label>
-                                    <span>Kích hoạt</span>
+                                    <span>{{status}}</span>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Số dư tài khoản:</label>
-                                    <span>1.000.000.000đ</span>
+                                    <span><strong>{{ amount}}</strong></span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Ảnh CMND/CCCD (trước):</label>
-                                    <img src="/images/CCCD.png" alt="CMND/CCCD">
+                                    <img src="images/users/{{imgFront}}" alt="CMND/CCCD">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-2">
                                     <label class="font-weight-bold">Ảnh CMND/CCCD (sau):</label>
-                                    <img src="/images/CCCD_sau.png" alt="CMND/CCCD">
+                                    <img src="images/users/{{imgBack}}" alt="CMND/CCCD">
                                 </div>
                             </div>
                         </div>
@@ -84,7 +90,7 @@
                         <h4 class="mb-0 text-danger">Bổ sung CMND/CCCD</h4>
                     </div>
                     <div class="card-body">
-                        <form id="member-profile__submit-form" class="needs-validation member-profile__form" novalidate>
+                        <form id="member-profile__submit-form" class="needs-validation member-profile__form" enctype="multipart/form-data" action="/update-img" method="post" novalidate>
                             <div class="form-row">
                                 <div class="col-12 col-lg-6">
                                     <div class="form-group member-profile__form-card">
@@ -92,9 +98,8 @@
                                         <div class="member-profile__form-card-wrapper">
                                             <img id="member-profile__form-view1" src="/images/image-default.jpg"
                                                 alt="Image">
-                                            <input type="file" class="form-control d-none"
-                                                id="member-profile__form-file1" accept="image/*" required
-                                                placeholder="Họ và tên">
+                                            <input type="file" class="form-control d-none" id="member-profile__form-file1"
+                                            accept="image/*" required placeholder="CCCD mặt trước" name="idphoto1">
                                             <label for="member-profile__form-file1">
                                                 <i class="fa-solid fa-camera"></i>
                                             </label>
@@ -111,9 +116,8 @@
                                         <div class="member-profile__form-card-wrapper">
                                             <img id="member-profile__form-view2" src="/images/image-default.jpg"
                                                 alt="Image">
-                                            <input type="file" class="form-control d-none"
-                                                id="member-profile__form-file2" accept="image/*" required
-                                                placeholder="Họ và tên">
+                                            <input type="file" class="form-control d-none"  id="member-profile__form-file2" 
+                                            accept="image/*" required placeholder="CCCD mặt sau" name="idphoto2" >
                                             <label for="member-profile__form-file2">
                                                 <i class="fa-solid fa-camera"></i>
                                             </label>
@@ -147,13 +151,11 @@
         const memberProfileImageView2 = document.getElementById('member-profile__form-view2')
 
         memberProfileForm.addEventListener('submit', function (event) {
-            event.preventDefault()
-            event.stopPropagation()
             if (memberProfileForm.checkValidity() === false) {
-                memberProfileForm.classList.add('was-validated')
-            } else {
-                memberProfileForm.classList.remove('was-validated')
+                event.preventDefault()
+                event.stopPropagation()
             }
+            memberProfileForm.classList.add('was-validated')
         }, false)
 
         // Sự kiện thêm ảnh mặt trước
@@ -165,7 +167,6 @@
                 reader.onload = function (e) {
                     memberProfileImageView1.setAttribute('src', e.target.result)
                 }
-
                 reader.readAsDataURL(file)
             }
         })
