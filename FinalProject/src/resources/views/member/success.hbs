@@ -3,7 +3,7 @@
 <div class="dashboard-wrapper member-profile">
 	<div class="container-fluid dashboard-content">
 		<div class="row ">
-			<div  class="col-lg-5 col-md-5 col-sm-12 col-12 text-center justify-content border rounded py-5 my-5 mx-auto">
+			<div  class="col-lg-6 col-md-5 col-sm-12 col-12 text-center justify-content border rounded py-5 my-5 mx-auto">
 				<div class="justify-content mx-auto"
 					style="
 						width: 150px;
@@ -28,15 +28,38 @@
 				<div>
 					<h2 class="my-3" style="color: green"><strong>Thành công</strong></h2>
 				</div>
+				{{#if deposit}}
 				<div>
-					Giao dịch <span><strong>{{transaction}}</strong></span> với số tiền <span><strong>{{amount}}</strong></span> của quý khách đã thực hiện thành công, vui lòng kiểm tra số dư.
+					Giao dịch <span><strong>nạp tiền</strong></span> với số tiền <span><strong>{{amount}}</strong></span> của quý khách đã thực hiện thành công, vui lòng kiểm tra số dư.
 				</div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong>Tên khách hàng: </strong><span >{{name}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Số thẻ: </strong><span >{{idCard}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Mã CVV: </strong><span >{{cvv}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Ngày nạp: </strong><span >{{time}}</span></div>
+				{{/if}}
+				{{#if pending}}
 				<div>
-					Giao dịch <span><strong>{{transaction}}</strong></span> với số tiền <span><strong>{{amount}}</strong></span> của quý khách đang được duyệt.
+					Giao dịch <span><strong>rút tiền</strong></span> với số tiền <span><strong>{{amount}}</strong></span> của quý khách đang được duyệt.
 				</div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong>Tên khách hàng: </strong><span >{{name}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Số thẻ: </strong><span >{{idCard}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Mã CVV: </strong><span >{{cvv}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Ngày nạp: </strong><span >{{time}}</span></div>
+				{{/if}}
+				{{#if approved}}
 				<div>
-					Giao dịch <span><strong>{{transaction}}</strong></span> với số tiền <span><strong>{{amount}}</strong></span> của quý khách đang được duyệt.
+					Giao dịch <span><strong>rút tiền</strong></span> với số tiền <span><strong>{{amount}}</strong></span> của quý khách đã thực hiện thành công, vui lòng kiểm tra số dư.
 				</div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong>Tên khách hàng: </strong><span >{{name}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Số thẻ: </strong><span >{{idCard}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Mã CVV: </strong><span >{{cvv}}</span></div>
+				<div class="mx-auto my-2 col-lg-8 col-md-8 col-sm-12 col-12"><strong >Ngày nạp: </strong><span >{{time}}</span></div>
+				{{/if}}
+				{{#if card}}
+				<div>
+					Giao dịch mua thẻ cào điện thoại<span><strong>{{transaction}}</strong></span> của quý khách đang được duyệt.
+				</div>
+				{{/if}}
 			</div>
 		</div>
 	</div>
