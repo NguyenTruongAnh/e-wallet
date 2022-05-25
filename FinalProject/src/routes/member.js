@@ -42,7 +42,7 @@ const depositValidation = [
     check('idCard').notEmpty().withMessage('Vui lòng nhập số thẻ').isLength({max:6, min:6}).withMessage('Số thẻ phải có 6 số'),
     check('cvv').notEmpty().withMessage('Vui lòng nhập mã CVV!').isLength({min:3,max:3}).withMessage('Mã CVV có độ dài 3 kí tự'),
     check('expireDate').notEmpty().withMessage('Vui lòng chọn ngày hết hạn'),
-    check('amount').notEmpty().withMessage('Vui lòng chọn số tiền cần nạp')
+    check('amount').notEmpty().withMessage('Vui lòng chọn số tiền cần nạp').isNumeric().withMessage('Vui lòng nhập số tiền là số'),
 ]
 
 router.post('/deposit',checkAuth, checkResetPassword,depositValidation, (req,res)=>{
@@ -84,22 +84,21 @@ router.post('/deposit',checkAuth, checkResetPassword,depositValidation, (req,res
                                         if(err){
                                             console.log(err)
                                         }else{
-                                            req.session.account.amount = newAmount
+                                  
                                             var transaction = new Transaction({
                                                 type: 'deposit',
                                                 idCard: idCard,
                                                 expireDate: expireDate,
-                                                amount : amount,
-                                             
+                                                amount : amount,                              
                                                 phone: req.session.account.phone
                                             })
-                                            transaction.save().then(()=>{
-                                                req.flash('flash', {
-                                                    type: 'success',
-                                                    intro: 'Thành công!',
-                                                    message: `Nạp tiền thành công. Quý khách vui lòng kiểm tra lại số dư`
-                                                })
-                                                return res.redirect('/')
+                                            transaction.save().then(()=>{                                
+                                                req.flash('amount', parseInt(amount))
+                                                req.flash('idCard',idCard)
+                                                req.session.transactionType = 'deposit'
+                                                req.flash('time',new Date().toISOString().split('T')[0])
+                                                req.flash('cvv',cvv)
+                                                return res.redirect('/success')
                                             })
                                         }
                                     })
@@ -122,7 +121,7 @@ router.post('/deposit',checkAuth, checkResetPassword,depositValidation, (req,res
                                             if(err){
                                                 console.log(err)
                                             }else{
-                                                req.session.account.amount = newAmount
+                                         
                                                 var transaction = new Transaction({
                                                     type: 'deposit',
                                                     idCard: idCard,
@@ -173,7 +172,8 @@ router.post('/deposit',checkAuth, checkResetPassword,depositValidation, (req,res
         return res.redirect('/deposit') 
     }
 })
-router.get('/success',userController.success)
+router.get('/success',checkAuth,checkResetPassword,userController.success)
+
 router.get('/transactions/:id',checkAuth, checkResetPassword, userController.getTransactionById)
 
 router.get('/transactions',checkAuth, checkResetPassword, userController.getTransactions)
@@ -186,7 +186,7 @@ const withdrawValidation = [
     check('idCard').notEmpty().withMessage('Vui lòng nhập số thẻ').isLength({max:6, min:6}).withMessage('Số thẻ phải có 6 số'),
     check('cvv').notEmpty().withMessage('Vui lòng nhập mã CVV!').isLength({min:3,max:3}).withMessage('Mã CVV có độ dài 3 kí tự'),
     check('expireDate').notEmpty().withMessage('Vui lòng chọn ngày hết hạn'),
-    check('amount').notEmpty().withMessage('Vui lòng chọn số tiền cần nạp'),
+    check('amount').notEmpty().withMessage('Vui lòng chọn số tiền cần nạp').isNumeric().withMessage('Vui lòng nhập số tiền là số'),
 ]
 
 router.post('/withdraw',checkAuth, checkResetPassword,withdrawValidation, (req,res)=>{
@@ -228,8 +228,7 @@ router.post('/withdraw',checkAuth, checkResetPassword,withdrawValidation, (req,r
                                         return res.redirect('/withdraw')
                                     }
                                     let today = new Date().toISOString()
-                                    Transaction.find({phone: req.session.account.phone, createAt :  today},(err,docs)=>{
-                                    
+                                    Transaction.find({phone: req.session.account.phone, createAt :  today,type: 'withdraw'},(err,docs)=>{    
                                         if(docs.length >= 2){
                                             req.flash('error','Số lần giao dịch rút tiền trong ngày của tài khoản này đã đạt hạn mức quy định.')
                                             return res.redirect('/withdraw')
@@ -253,12 +252,12 @@ router.post('/withdraw',checkAuth, checkResetPassword,withdrawValidation, (req,r
                                                     phone: req.session.account.phone
                                                 })
                                                 transaction.save(()=>{
-                                                    req.flash('flash', {
-                                                        type: 'success',
-                                                        intro: 'Thành công!',
-                                                        message: `Giao dịch của quý khách đang chờ duyệt`
-                                                    })
-                                                    return res.redirect('/')
+                                                    req.flash('amount', parseInt(amount))
+                                                    req.flash('idCard',idCard)
+                                                    req.session.transactionType = 'pending'
+                                                    req.flash('time',new Date().toISOString().split('T')[0])
+                                                    req.flash('cvv',cvv)
+                                                    return res.redirect('/success')
                                                 })
                                             }else{
                                             Account.updateOne({phone: req.session.account.phone},{amount: newAmount},(err)=>{
@@ -277,21 +276,18 @@ router.post('/withdraw',checkAuth, checkResetPassword,withdrawValidation, (req,r
                                                         phone: req.session.account.phone
                                                     })
                                                     transaction.save(()=>{
-                                                        req.flash('flash', {
-                                                            type: 'success',
-                                                            intro: 'Thành công!',
-                                                            message: `Rút tiền thành công. Quý khách vui lòng kiểm tra lại số dư`
-                                                        })
-                                                        return res.redirect('/')
+                                                        req.flash('amount', parseInt(amount))
+                                                        req.flash('idCard',idCard)
+                                                        req.session.transactionType = 'approved'
+                                                        req.flash('time',new Date().toISOString().split('T')[0])
+                                                        req.flash('cvv',cvv)
+                                                        return res.redirect('/success')
                                                     })
                                                 }
                                             })
                                             }
                                         }   
-                                    })
-                                    
-                                    
-                                    
+                                    })                 
                                 }
                             }
                         })
@@ -303,14 +299,10 @@ router.post('/withdraw',checkAuth, checkResetPassword,withdrawValidation, (req,r
                     case '333333':
                         req.flash('error','Thẻ này không được hỗ trợ để rút tiền')
                         return res.redirect('/withdraw') 
-                      break;
-                 
+                      break;         
                   }
                }
-
            }
-          
-
        })
     }else{
         result = result.mapped()

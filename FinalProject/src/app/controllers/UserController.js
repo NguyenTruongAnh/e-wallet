@@ -27,8 +27,24 @@ class UserController {
         res.render('member/detailtransaction.hbs', { layout: 'memberlayout' })
     }
 
-    success(req,res){
-        res.render('member/success.hbs', { layout: 'memberlayout' })
+    async success(req,res){
+        let user = await User.findOne({phone : req.session.account.phone})
+        const name = user.name
+        const amount = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(req.flash('amount')) 
+        const time = req.flash('time')
+        const idCard = req.flash('idCard')
+        const cvv = req.flash('cvv')
+        if(req.session.transactionType == 'deposit'){
+            
+                return res.render('member/success.hbs', { layout: 'memberlayout',name: name, amount: amount,idCard : idCard, deposit : true, time: time, cvv: cvv})
+        }else if(req.session.transactionType == 'approved'){
+            
+                return res.render('member/success.hbs', { layout: 'memberlayout',name: name, amount: amount,idCard : idCard, approved : true, time: time, cvv: cvv})
+        }else if(req.session.transactionType == 'pending'){
+                return res.render('member/success.hbs', { layout: 'memberlayout',name: name, amount: amount,idCard : idCard, pending : true, time: time, cvv: cvv})
+        }else if(req.session.transactionType == 'transfer'){
+
+        }
     }
 
     // [GET] /transactions
@@ -72,10 +88,16 @@ class UserController {
         // console.log(new Date().toISOString())
         // // Transaction.find({createdAt : })
         // let today = new Date('2022-05-25T08:19:32.937+00:00').toLocaleString()
-        // console.log(today)
+ 
 
-        req.session.account.isChangeDefaultPassword = true
+        Account.findOne({phone: req.session.account.phone},(err,account)=>{
+            if(err)console.log(err)
+            req.session.account = account
+        })
+  
+     
         const currentAccount = req.session.account
+        
         User.findOne({phone : currentAccount.phone},(err,user)=>{
             const name = user.name
             const dob = user.birthday
