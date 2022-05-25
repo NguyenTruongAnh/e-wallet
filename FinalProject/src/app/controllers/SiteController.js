@@ -245,6 +245,63 @@ class SiteController {
         res.render('recovery.hbs', { layout: 'emptyLayout', phone: phone, email: email, error: error,flash: flash[0]})
     }
 
+    // [POST] /recovery
+    Recovery(req, res) {
+        let result = validationResult(req)
+            const {phone, email} = req.body
+            if(result.errors.length === 0){
+                User.findOne({email : email},(err,user)=>{
+                    if(err)
+                    console.log(err)
+                    if(!user){
+                        req.flash('phone','')
+                        req.flash('email','')
+                        req.flash('error','Tài khoản không tồn tài')
+                        return res.redirect('/recovery') 
+                    }else{
+                        if(user.phone !== phone){
+                            req.flash('phone','')
+                            req.flash('email',email)
+                            req.flash('error','Số điện thoại không chính xác')
+                            return res.redirect('/recovery') 
+                        }else{
+                            Account.findOne({phone: phone},(err,account)=>{
+                                if(err)
+                                console.log(err)
+                                if(account.status == 3){
+                                    req.flash('error', 'Tài khoản này đã bị vô hiệu hóa, hiện không thể sử dụng được chức năng này.')
+                                    return res.redirect('/recovery') 
+                                }
+                                //pass
+                              
+                                req.session.email = email
+                                req.session.phone = phone
+                                req.session.sent = true
+                                req.flash('flash', {
+                                    type: 'success',
+                                    intro: 'Thành công!',
+                                    message: `Vui lòng check email để nhận được mã OTP.` 
+                                })
+                                return res.redirect('/recovery2')
+                            })
+                           
+                        }
+                    }
+                })
+            }else{
+                result = result.mapped()
+                let message = ''
+                for(fields in result){
+                    message = result[fields].msg
+                    break;
+                }
+                req.flash('phone',phone)
+                req.flash('email',email)
+                req.flash('error',message)
+                return res.redirect('/recovery') 
+            }
+    }
+
 
     // [GET] /recovery2
     recovery2(req, res) {

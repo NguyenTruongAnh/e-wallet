@@ -120,7 +120,7 @@
     color: #6c757d;
 }
 
-#account-table.lock .account-table__item-status {
+#account-table.block .account-table__item-status {
     color: #dc3545;
 }
 

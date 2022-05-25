@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <title>Ví điện tử AVAT</title>
+    <link rel="icon" type="image/png" href="/images/logo.jpg">
     {{!-- Font anwersome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
@@ -28,7 +28,18 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
+<body style="position: relative;">
+    {{#if flash}}
+    <div style="position: absolute; left: 0; right: 0; top: 10px; display: flex; justify-content: center; padding: 0 8px;">
+        <div class="alert alert-{{flash.type}} alert-dismissible fade show" style="max-width: 800px; width: 100%; z-index: 999;" role="alert">
+            <strong>{{flash.intro}}</strong> {{flash.message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {{/if}}
+
     {{{body}}}
 </body>
 

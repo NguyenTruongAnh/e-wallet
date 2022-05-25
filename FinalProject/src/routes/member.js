@@ -20,7 +20,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 const cpUpload = upload.fields([{ name: 'idphoto1', maxCount: 1 }, { name: 'idphoto2', maxCount: 1 }])
 const handleValidation = (req, res, next) => {
-    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.flash('flash', {

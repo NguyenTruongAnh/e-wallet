@@ -9,13 +9,39 @@
                     <tr>
                         <th style="min-width: 100px;">ID</th>
                         <th style="min-width: 150px;">Loại giao dịch</th>
-                        <th style="min-width: 200px;">Số tiền</th>
+                        <th style="min-width: 120px;">Số tiền</th>
                         <th style="min-width: 120px;">Ngày tạo</th>
                         <th style="min-width: 120px;">Tình trạng</th>
                         <th style="min-width: 120px;">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {{#each transactions}}
+                    <tr class="transaction-table__item">
+                        <td class="align-middle">
+                            <a href="/admin/transactions/{{this._id}}">
+                                <b>{{formatId this._id}}</b>
+                            </a>
+                        </td>
+                        <td class="align-middle">
+                            <b>{{formatType this.type}}</b>
+                        </td>
+                        <td class="align-middle">
+                            {{formatMoney this.amount}}đ
+                        </td>
+                        <td class="align-middle">
+                            {{formatDate this.createdAt}}
+                        </td>
+                        <td class="align-middle">
+                            <b class="text-success">Xác nhận</b>
+                        </td>
+                        <td class="align-middle">
+                            <a href="/admin/transactions/000001" type="button" class="btn btn-outline-primary">
+                                Xem chi tiết
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
                     <tr class="transaction-table__item">
                         <td class="align-middle">
                             <a href="/admin/transactions/000001">
