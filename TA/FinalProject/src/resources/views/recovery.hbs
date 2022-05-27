@@ -1,0 +1,69 @@
+<div class="recovery">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-4 offset-xl-4">
+                <div class="recovery__wrapper">
+                    <h2 class="recovery__title">Quên mật khẩu</h2>
+                    <form id="recovery-submit-form" class="recovery__form needs-validation" novalidate action="/recovery" method="POST">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="recovery-email" name="email" required 
+                                placeholder="Email đăng ký">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập email!
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control" id="recovery-phone" name="phone" required
+                                placeholder="Số điện thoại đăng ký">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập số điện thoại!
+                            </div>
+                            <div id="invalid-recovery-phone" class="text-danger d-none" style="font-size: 80%;">
+                                Số điện thoại không hợp lệ
+                            </div>
+                        </div>
+                        <div class="recovery__form-control">
+                            <button type="submit" class="btn btn-primary">Tiếp theo</button>
+                            <div class="d-flex justify-content-center mt-4">
+                                <a href="/login">Quay lại đăng nhập</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const recoveryForm = document.getElementById("recovery-submit-form")
+
+        recoveryForm.addEventListener('submit', function (event) {
+            if (recoveryForm.checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+                recoveryForm.classList.add('was-validated')
+            } else {
+                recoveryForm.classList.remove('was-validated')
+                const email = $('#recovery-email').val()
+                const phone = $('#recovery-phone').val()
+
+                if (checkPhoneNumber(phone)) {  
+                    $('#invalid-recovery-phone').addClass('d-none');
+
+                    recoveryForm.submit()
+                } else {
+                    $('#invalid-recovery-phone').removeClass('d-none');
+                }
+                
+            }
+        }, false)
+    })
+
+
+    // Kiểm tra số điện thoại
+    function checkPhoneNumber(phone) {
+        return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(phone)
+    }
+</script>

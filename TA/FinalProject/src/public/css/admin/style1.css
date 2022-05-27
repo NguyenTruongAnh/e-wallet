@@ -1,0 +1,240 @@
+/* Admin Header */
+.admin-header {
+    height: 60px;
+    width: 100%;
+    background-color: #c3e8fa;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 32px;
+}
+
+.admin-header__left,
+.admin-header__right {
+    display: flex;
+    align-items: center;
+}
+
+.admin-header__logo {
+    display: flex;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+}
+
+.admin-header__logo:hover {
+    color: blue;
+    text-decoration: none;
+}
+
+.admin-header__logo > img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 8px;
+}
+
+.admin-header__logo > span {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Admin Sitebar */
+.admin-sitebar {
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 8px #6cceff;
+    margin-bottom: 24px;
+}
+
+.admin-sitebar__title {
+    margin: 0;
+    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: bold;
+}
+
+.admin-sitebar__list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.admin-sitebar__wrapper.active--account .admin-sitebar__title--account a,
+.admin-sitebar__wrapper.active--transaction .admin-sitebar__title--transaction a {
+    background-color: #47b6ed;
+    color: #fff;
+}
+
+.admin-sitebar__item a {
+    display: block;
+    padding: 4px 12px;
+    margin-bottom: 4px;
+    border-radius: 12px;
+    color: #333;
+    text-decoration: none;
+}
+
+.admin-sitebar__item:hover a {
+    background-color: #6cceff !important;
+    color: #fff !important;
+}
+
+.admin-sitebar__item.active > a {
+    color: #fff;
+}
+
+.admin-sitebar__item > a > i {
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+}
+
+/* ------ Quản lý tài khoản ------ */
+/* Admin Accounts */
+.account {
+
+}
+
+.account-title {
+    margin-bottom: 24px;
+}
+
+.account-filters {
+    list-style: none;
+    padding: 0;
+}
+
+#account-status-select {
+    padding: 4px 12px;
+    outline: none;
+    border: 1px solid #6cceff;
+    border-radius: 4px;
+}
+
+#account-table.active .account-table__item-status {
+    color: #28a745;
+}
+
+#account-table.wait-active .account-table__item-status {
+    color: #6c757d;
+}
+
+#account-table.block .account-table__item-status {
+    color: #dc3545;
+}
+
+#account-table.disable .account-table__item-status {
+    color: #ffc107;
+}
+
+/* Admin Account Detail */
+.account-detail__title {
+    margin-bottom: 12px;
+}
+
+.account-detail__info {
+    padding: 16px;
+}
+
+.account-detail__info span {
+    display: block;
+    padding: 4px 12px;
+    border: 1px solid #6cceff;
+    border-radius: 12px;
+}
+
+.account-detail__info img {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    max-height: 250px;
+    object-fit: fill;
+}
+
+.account-table__item.transfer .icon--transfer,
+.account-table__item.recharge .icon--recharge,
+.account-table__item.withdraw .icon--withdraw,
+.account-table__item.receive .icon--receive,
+.account-table__item.payment .icon--payment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-table__item i {
+    display: none;
+    width: 20px;
+    height: 20px;
+}
+
+/* ------ Quản lý giao dịch ------ */
+/* Admin transactions */
+.transaction {
+
+}
+
+.transaction-title {
+    margin-bottom: 24px;
+}
+
+/* Admin Transaction Detail */
+.transaction-detail__title {
+    margin-bottom: 12px;
+}
+
+.transaction-detail__user {
+    padding: 12px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+}
+
+.transaction-detail__info span,
+.transaction-detail__info textarea {
+    display: block;
+    width: 100%;
+    padding: 4px 12px;
+    border: 1px solid #6cceff;
+    border-radius: 12px;
+}
+
+/* Fix cứng cột đầu của bảng khi responsive */
+th {
+    background-color: white;
+}
+
+th:first-child,
+td:first-child {
+    position: sticky;
+    left: 0px;
+
+}
+
+td:first-child {
+    background-color: white;
+}
+
+
+/* ------ Responsive theo kích thước màn hình ------ */
+/* Mobile and Tablet */
+@media (max-width: 1023px) {
+
+}
+
+
+/* Tablet */
+@media (min-width: 740px) and (max-width: 1023px) {
+
+}
+
+/* Mobile */
+@media (max-width: 739px) {
+    .account-title {
+        font-size: 24px;
+    }
+
+    .account-detail__title {
+        font-size: 24px;
+    }
+}

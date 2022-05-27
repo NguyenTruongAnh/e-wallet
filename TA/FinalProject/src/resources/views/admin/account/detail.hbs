@@ -1,0 +1,338 @@
+<div class="account-detail">
+    <h2 class="account-detail__title">
+        Chi tiết tài khoản
+    </h2>
+    <a href="/admin/accounts" class="d-inline-block mb-2">Quay lại</a>
+    <div class="container-fluid">
+        <div class="row">
+            {{#if user}}
+            {{!-- Thông tin tài khoản --}}
+            <div class="col-12 col-xl-5">
+                <h5>Thông tin người dùng</h5>
+                <div class="form-row account-detail__info">
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Họ và tên:</label>
+                            <span>{{user.name}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Email:</label>
+                            <span>{{user.email}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Số điện thoại:</label>
+                            <span>{{user.phone}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Ngày sinh:</label>
+                            <span>{{formatDate user.birthday}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">CMND/CCCD (mặt trước):</label>
+                            <img src="/images/users/{{user.imgFront}}" alt="CMND/CCCD">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">CMND/CCCD (mặt sau):</label>
+                            <img src="/images/users/{{user.imgBack}}" alt="CMND/CCCD">
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Thông tin tài khoản</h5>
+                <div class="form-row account-detail__info">
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">ID tài khoản:</label>
+                            <span id="accountId">{{user.accountId}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Tên tài khoản:</label>
+                            <span>{{user.username}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Tình trạng:</label>
+                            {{#if user.isBlock}}
+                                <span>Khóa vô thời hạn</span>
+                            {{else}}
+                                <span>{{formatStatus user.status}}</span>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Thao tác:</label>
+                            {{!-- Tùy vào tình trạng tài khoản để render ra --}}
+                            <div class="account-detail__controls">
+                            {{#if user.isBlock}}
+                                {{!-- Tài khoản bị khóa --}}
+                                <div class="account-detail__control d-flex justify-content-center mb-2">
+                                    <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                                        data-target="#account-detail__modal" data-type="unlock">Mở khóa tài khoản</button>
+                                </div>
+                            {{else}}
+                                {{#switch user.status}}
+                                    {{#case 0}} 
+                                    {{!-- Tài khoản chờ kích hoạt --}}
+                                    <div class="account-detail__control d-flex justify-content-center mb-2">
+                                        <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="confirm">Xác minh</button>
+                                        <button type="button" class="mx-2 btn btn-danger" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="cancel">Hủy</button>
+                                        <button type="button" class="mx-2 btn btn-warning" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="complementary">Yêu cầu bổ xung</button>
+                                    </div>
+                                    {{/case}}
+                                    {{#case 1}} 
+                                    {{!-- Tài khoản đã kích hoạt --}}
+                                    <div class="account-detail__control d-flex justify-content-center mb-2">
+                                        <button type="button" class="mx-2 btn btn-danger" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="lock">Khóa tài khoản</button>
+                                    </div>
+                                    {{/case}}
+                                    {{#case 3}}
+                                    {{!-- Tài khoản bị vô hiệu --}}
+                                    <div class="account-detail__control d-flex justify-content-center mb-2">
+                                        <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="confirm">Kích hoạt tài khoản</button>
+                                    </div>
+                                    {{/case}}
+                                {{/switch}}
+                            {{/if}}
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Lịch sử giao dịch --}}
+            <div class="col-12 col-xl-7">
+                <h5>Lịch sử giao dịch</h5>
+                <div class="table-responsive">
+                    <table id="account-detail__talbe" class="table active">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 40px;">#</th>
+                                <th style="min-width: 120px;">Giao dịch</th>
+                                <th style="min-width: 100px;">số tiền</th>
+                                <th style="min-width: 120px;">Thời gian</th>
+                                <th style="min-width: 120px;">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="account-table__item transfer">
+                                <td class="align-middle">
+                                    {{!-- Chuyển tiền --}}
+                                    <i class="icon--transfer fa-solid fa-money-bill-transfer"></i>
+                                    {{!-- Nạp tiền --}}
+                                    <i class="icon--recharge fa-solid fa-file-invoice-dollar"></i>
+                                    {{!-- Rút tiền --}}
+                                    <i class="icon--withdraw fa-solid fa-money-check-dollar"></i>
+                                    {{!-- Nhận tiền --}}
+                                    <i class="icon--receive fa-solid fa-money-bill-1"></i>
+                                    {{!-- Thanh toán dịch vụ --}}
+                                    <i class="icon--payment fa-solid fa-money-bills"></i>
+                                </td>
+                                <td class="align-middle">
+                                    Chuyển tiền
+                                </td>
+                                <td class="align-middle">
+                                    120.000.000đ
+                                </td>
+                                <td class="account-table__item-status">
+                                    10/05/2022
+                                </td>
+                                <td class="align-middle">
+                                    <b class="text-success">Đã duyệt</b>
+                                </td>
+                            </tr>
+                            <tr class="account-table__item withdraw">
+                                <td class="align-middle">
+                                    {{!-- Chuyển tiền --}}
+                                    <i class="icon--transfer fa-solid fa-money-bill-transfer"></i>
+                                    {{!-- Nạp tiền --}}
+                                    <i class="icon--recharge fa-solid fa-file-invoice-dollar"></i>
+                                    {{!-- Rút tiền --}}
+                                    <i class="icon--withdraw fa-solid fa-money-check-dollar"></i>
+                                    {{!-- Nhận tiền --}}
+                                    <i class="icon--receive fa-solid fa-money-bill-1"></i>
+                                    {{!-- Thanh toán dịch vụ --}}
+                                    <i class="icon--payment fa-solid fa-money-bills"></i>
+                                </td>
+                                <td class="align-middle">
+                                    Rút tiền
+                                </td>
+                                <td class="align-middle">
+                                    10.000.000đ
+                                </td>
+                                <td class="align-middle">
+                                    01/05/2022
+                                </td>
+                                <td class="align-middle">
+                                    <b class="text-danger">Hủy</b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <button id="account-detail__transactions-load-btn" type="button" class="btn btn-primary">Xem
+                        thêm</button>
+                </div>
+            </div>
+            {{else}}
+            <div class="col-12">
+                <h5 class="text-center">Người dùng không tồn tại!</h5>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+{{!-- Modal Message --}}
+<div class="modal fade" id="account-detail__modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="account-detail__modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="account-detail__modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success btn-submit" data-dismiss="modal">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="response__modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="response__modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const accountDetailModalMessage = $('#account-detail__modal')
+    const accountDetailModalTitle = $('#account-detail__modal-title')
+    const accountDetailModalBodyMessage = $('#account-detail__modal-message')
+    const responseModalMessage = $('#response__modal')
+    const responseModalBodyMessage = $('#response__modal-message')
+    let button
+    accountDetailModalMessage.on('show.bs.modal', function (event) {
+            button = $(event.relatedTarget)
+            const type = button.data('type')
+            let title
+            let message
+            
+            switch(type) {
+                case 'confirm':
+                    title = 'Xác minh tài khoản'
+                    message = 'Bạn muốn xác minh tài khoản này ?'
+                    break
+                case 'cancel':
+                    title = 'Hủy kích hoạt tài khoản'
+                    message = 'Bạn muốn hủy kích hoạt tài khoản này ?'
+                    break
+                case 'complementary':
+                    title = 'Yêu cầu bổ sung thông tin'
+                    message = 'Bạn muốn yêu cầu tài khoản này bổ sung thông tin?'
+                    break
+                case 'lock':
+                    title = 'Khóa tài khoản'
+                    message = 'Bạn muốn khóa tài khoản này?'
+                    break
+                case 'unlock':
+                    title = 'Mở khóa tài khoản'
+                    message = 'Bạn muốn mở khóa tài khoản này?'
+                    break
+                default:
+                    title = ''
+                    message = ''
+            }
+
+            accountDetailModalTitle.html(title)
+            accountDetailModalBodyMessage.html(message)
+
+    })
+
+    $('.btn-submit').click(() => {
+        const id = $('#accountId').text()
+        const url = `http://localhost:3000/admin/accounts/${id}`
+        let data
+        let message
+        switch(button.data('type')) {
+                case 'confirm':
+                    data = { status: 1 }
+                    message = 'Xác minh tài khoản '
+                    break
+                case 'complementary':
+                    data = { status: 2 }
+                    message = 'Yêu cầu bổ sung thông tin '
+                    break
+                case 'cancel':
+                    data = { status: 3 }
+                    message = 'Hủy kích hoạt tài khoản '
+                    break
+                case 'lock':
+                    data = { status: 4 }
+                    message = 'Khóa tài khoản '
+                    break
+                case 'unlock':
+                    data = { isBlock: false, invalidLoginTime: 0, wrongPasswordTime: 0 }
+                    message = 'Mở khóa tài khoản '
+                    break
+                default:
+                    break
+        }
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }).then(res => res.json())
+        .then(res => {
+            if(res.code === 0) {
+                location.reload()
+            } else {
+                message += res.message
+                responseModalBodyMessage.html(message)
+                responseModalMessage.modal('show')
+            }
+        })
+    })
+</script>
