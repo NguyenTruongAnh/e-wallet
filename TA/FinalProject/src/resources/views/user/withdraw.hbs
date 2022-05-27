@@ -1,0 +1,246 @@
+<div class="dashboard-wrapper">
+    <div class="container-fluid  dashboard-content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title"><i class="fa-solid fa-money-check-dollar"></i> Rút tiền </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="user-withdraw__form" class="needs-validation" novalidate>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label for="user-withdraw__form-card-id">Số thẻ:</label>
+                                            <input id="user-withdraw__form-card-id" type="number" class="form-control"
+                                                placeholder="Nhập số thẻ của quý khách (6 số)" required />
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập mã thẻ
+                                            </div>
+                                            <p class="d-none text-danger" id="user-withdraw__form-card-id-invalid">Số
+                                                thẻ phải gồm 6 số</p>
+                                        </div>
+
+                                        <div class="col-md-6 mb-2">
+                                            <label for="user-withdraw__form-card-cvv">Mã CVV:</label>
+                                            <input id="user-withdraw__form-card-cvv" type="number" class="form-control"
+                                                placeholder="Nhập CVV" required />
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập mã CVV
+                                            </div>
+                                            <p class="d-none text-danger" id="user-withdraw__form-card-cvv-invalid">Mã
+                                                CVV gồm 3 chữ số</p>
+                                        </div>
+
+                                        <div class="col-md-6 mb-2">
+                                            <label for="user-withdraw__form-card-date">Ngày hết hạn:</label>
+                                            <input type="date" id="user-withdraw__form-card-date" class="form-control"
+                                                placeholder="" required>
+                                            <div class="invalid-feedback">
+                                                Vui lòng chọn ngày hết hạn của thẻ
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-2">
+                                            <label for="user-withdraw__form-money">Số tiền:</label>
+                                            <input type="number" id="user-withdraw__form-money" class="form-control"
+                                                placeholder="Nhập số tiền cần rút" required>
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập số tiền cần rút
+                                            </div>
+                                            <p class="d-none text-danger" id="user-withdraw__form-money-invalid">Số
+                                                tiền rút phải là bội số của 50.000, tối thiếu từ 50.000đ</p>
+                                        </div>
+
+                                        <div class="col-md-12 mb-2">
+                                            <label for="user-withdraw__form-note">Ghi chú:</label>
+                                            <textarea name="" id="user-withdraw__form-note" class="w-100 px-2" cols="30"
+                                                placeholder="Ghi chú"></textarea>
+                                        </div>
+
+                                        <div class="col-md-12 mb-2">
+                                            Phí giao dịch: <span id="user-withdraw__form-fee">0đ</span> (5%
+                                            số
+                                            tiền được rút)
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-end mt-4">
+                                                <button type="submit" id="user-withdraw__form-btn"
+                                                    class="btn btn-space btn-success">
+                                                    Xác nhận
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div id="user-withdraw__form-loader"
+                                                class="col-12 d-none justify-content-center">
+                                                <div class="loader"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Modal message --}}
+<div id="withdraw-modal-message" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="withdraw-modal-body__message"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="recovery2-modal-btn" type="button" class="btn btn-success" data-dismiss="modal">Xác
+                    nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const userWithdrawForm = document.getElementById("user-withdraw__form")
+        const userWithdrawInputCardId = $('#user-withdraw__form-card-id')
+        const userWithdrawInputCardCVV = $('#user-withdraw__form-card-cvv')
+        const userWithdrawInputDate = $('#user-withdraw__form-card-date')
+        const userWithdrawInputMoney = $('#user-withdraw__form-money')
+        const userWithdrawInputNote = $('#user-withdraw__form-note')
+        const userWithdrawFee = $('#user-withdraw__form-fee')
+        const userWithdrawBtn = $('#user-withdraw__form-btn')
+
+        const userWithdrawLoader = $('#user-withdraw__form-loader')
+
+        const withdrawModalMessage = $('#withdraw-modal-message')
+        const withdrawModalBodyMessage = $('#withdraw-modal-body__message')
+
+        let checkUserWithdrawCardId = false // Cờ kiểm tra số thẻ đúng định dạng chưa trước khi submit
+        let checkUserWithdrawCardCVV = false
+        let checkUserWithdrawMoney = false
+
+        // Sự kiện gửi form lên
+        userWithdrawForm.addEventListener('submit', function (event) {
+            event.preventDefault()
+            event.stopPropagation()
+            if (userWithdrawForm.checkValidity() === false) {
+                userWithdrawForm.classList.add('was-validated')
+            } else {
+                userWithdrawForm.classList.remove('was-validated')
+
+                if (checkUserWithdrawCardId && checkUserWithdrawCardCVV && checkUserWithdrawMoney) {
+                    // Bật nút loader lên và ẩn nút gửi đi
+                    userWithdrawBtn.addClass('d-none')
+                    userWithdrawLoader.removeClass('d-none')
+                    userWithdrawLoader.addClass('d-flex')
+
+                    // Set timeout để có thời gian để thực hiện biến đổi giao diện
+                    setTimeout(function () {
+                        const cardId = userWithdrawInputCardId.val()
+                        const cardCVV = userWithdrawInputCardCVV.val()
+                        const amount = parseInt(userWithdrawInputMoney.val())
+                        const expiredDate = userWithdrawInputDate.val()
+                        const note = userWithdrawInputNote.val()
+                        const fee = amount * 0.05
+
+                        const withdrawData = {
+                            cardId,
+                            cardCVV,
+                            amount,
+                            expiredDate,
+                            fee,
+                            note
+                        }
+
+                        $.ajax({
+                            url: "http://localhost:3000/withdraw",
+                            type: "POST",
+                            data: withdrawData,
+                            async: false,
+                            success: function (result) {
+                                userWithdrawBtn.removeClass('d-none')
+                                userWithdrawLoader.addClass('d-none')
+                                userWithdrawLoader.removeClass('d-flex')
+
+                                if (result.code !== 1) {
+                                    userWithdrawForm.reset()
+                                    userWithdrawFee.text(`0đ`)
+                                }
+
+                                withdrawModalBodyMessage.html(result.message)
+                                withdrawModalMessage.modal('show')
+                            }
+                        })
+                    }, 1000)
+                }
+            }
+        }, false)
+
+        // Bắt sự kiện thay đổi của thẻ input Số thẻ
+        userWithdrawInputCardId.change(function () {
+            const value = parseInt(userWithdrawInputCardId.val())
+
+            if (!value || value < 100000 || value > 999999) {
+                $('#user-withdraw__form-card-id-invalid').removeClass('d-none')
+                checkUserWithdrawCardId = false
+            } else {
+                $('#user-withdraw__form-card-id-invalid').addClass('d-none')
+                checkUserWithdrawCardId = true
+            }
+        })
+
+        // Bắt sự kiện thay đổi của thẻ input Mã CVV
+        userWithdrawInputCardCVV.change(function () {
+            const value = parseInt(userWithdrawInputCardCVV.val())
+
+            if (!value || value < 100 || value > 999) {
+                $('#user-withdraw__form-card-cvv-invalid').removeClass('d-none')
+                checkUserWithdrawCardCVV = false
+            } else {
+                $('#user-withdraw__form-card-cvv-invalid').addClass('d-none')
+                checkUserWithdrawCardCVV = true
+            }
+        })
+
+        // Bắt sự kiện số tiền nạp thay đổi
+        userWithdrawInputMoney.change(function () {
+            const value = parseInt(userWithdrawInputMoney.val())
+
+            if (!value || value < 50000 || (value % 50000 !== 0)) {
+                $('#user-withdraw__form-money-invalid').removeClass('d-none')
+                checkUserWithdrawMoney = false
+            } else {
+                $('#user-withdraw__form-money-invalid').addClass('d-none')
+                checkUserWithdrawMoney = true
+
+                // Tính phí rút tiền 
+                userWithdrawFee.text(`${formatMoney(value * 0.05)}đ`)
+            }
+        })
+
+        // Format tiền
+        function formatMoney(a) {
+            const formatter = new Intl.NumberFormat('vi-VN')
+
+            return formatter.format(a)
+        }
+    })
+</script>

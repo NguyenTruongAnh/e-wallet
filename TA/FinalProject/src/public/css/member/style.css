@@ -1,0 +1,172 @@
+/* Member Header */
+.member-header {
+    height: 60px;
+    width: 100%;
+    background-color: #c3e8fa;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 32px;
+}
+
+.member-header__logo:hover {
+    color: blue;
+    text-decoration: none;
+}
+
+.member-header__logo {
+    display: flex;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+}
+
+.member-header__logo > img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 8px;
+}
+
+.member-header__logo > span {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Member Sitebar */
+.member-sitebar {
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 8px #6cceff;
+    margin-bottom: 24px;
+}
+
+.member-sitebar__title {
+    margin: 0;
+    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: bold;
+}
+
+.member-sitebar__list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.member-sitebar__item a {
+    display: block;
+    padding: 4px 12px;
+    margin-bottom: 4px;
+    border-radius: 12px;
+    color: #333;
+    text-decoration: none;
+}
+
+.member-sitebar__item:hover a {
+    background-color: #6cceff !important;
+    color: #fff !important;
+}
+
+.member-sitebar__item.active > a {
+    color: #fff;
+}
+
+.member-sitebar__item > a > i {
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+}
+
+/* Member Profile */
+.member-profile {
+
+}
+
+.member-profile__info span {
+    display: block;
+    padding: 4px 12px;
+    border: 1px solid #6cceff;
+    border-radius: 12px;
+}
+
+.member-profile__info .form-group img {
+    display: block;
+    width: 100%;
+}
+
+.member-profile__form-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.member-profile__form-card-wrapper img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.member-profile__form-card-wrapper label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translatey(-50%);
+}
+
+.member-profile__form-card-wrapper label i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.member-profile__form-card-wrapper label i:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.member-profile__form-control {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Member Transactions */
+
+/* Member Transaction Detail */
+.member-transaction-detail span,
+.member-transaction-detail textarea {
+    display: block;
+    width: 100%;
+    padding: 4px 12px;
+    border: 1px solid #6cceff;
+    border-radius: 12px;
+}
+
+/* Member Card */
+.member-card__network {
+    margin: 4px 12px;
+}
+
+.member-card__network img {
+    width: 120px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.member-card__network label {
+    border: 2px solid #888;
+    padding: 4px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.member-card__network input[type="radio"]:checked + label {
+    border: 2px solid red;
+} 
