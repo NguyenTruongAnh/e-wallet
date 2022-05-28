@@ -1,0 +1,61 @@
+<div class="dashboard-wrapper">
+    <div class="container-fluid  dashboard-content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử giao dịch </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <h5 class="card-header">Danh sách các giao dịch đã thực hiện </h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Thời gian</th>
+                                        <th>Loại giao dịch</th>
+                                        <th>Số tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>6-21-2022 11:40AM</td>
+                                        <td>Chuyển tiền</td>
+                                        <td>100.000đ</td>
+                                        <td>
+                                            {{!--Render theo trạng thái tương ứng --}}
+                                            <span class="badge bg-success text-white">Thành công</span>
+                                            <span class="badge bg-warning text-white">Chờ duyệt</span>
+                                            <span class="badge bg-danger text-white">Bị hủy</span>
+                                        </td>
+                                        <td><a href="/transactions/1">Xem chi tiết</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5-22-2022 10:50AM</td>
+                                        <td>Chuyển tiền</td>
+                                        <td>200.000đ</td>
+                                        <td>
+                                            {{!--Render theo trạng thái tương ứng --}}
+                                            <span class="badge bg-success text-white">Thành công</span>
+                                            <span class="badge bg-warning text-white">Chờ duyệt</span>
+                                            <span class="badge bg-danger text-white">Bị hủy</span>
+                                        </td>
+                                        <td><a href="/transactions/1">Xem chi tiết</a></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
