@@ -1,0 +1,251 @@
+<div class="account-detail">
+    <h2 class="account-detail__title">
+        Chi tiết tài khoản
+    </h2>
+    <a href="/admin/accounts" class="d-inline-block mb-2">Quay lại</a>
+    <div class="container-fluid">
+        <div class="row">
+            {{#if user}}
+            {{!-- Thông tin tài khoản --}}
+            <div class="col-12 col-xl-5">
+                <h5>Thông tin người dùng</h5>
+                <div class="form-row account-detail__info">
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Họ và tên:</label>
+                            <span>{{user.name}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Email:</label>
+                            <span>{{user.email}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Số điện thoại:</label>
+                            <span id="account-phone">{{user.phone}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Ngày sinh:</label>
+                            <span>{{formatDate user.birthday}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">CMND/CCCD (mặt trước):</label>
+                            <img src="/images/users/{{user.imgFront}}" alt="CMND/CCCD">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">CMND/CCCD (mặt sau):</label>
+                            <img src="/images/users/{{user.imgBack}}" alt="CMND/CCCD">
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Thông tin tài khoản</h5>
+                <div class="form-row account-detail__info">
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">ID tài khoản:</label>
+                            <span id="accountId">{{user.accountId}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Tên tài khoản:</label>
+                            <span>{{user.username}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Tình trạng:</label>
+                            {{#if user.isBlock}}
+                                <span>Khóa vô thời hạn</span>
+                            {{else}}
+                                <span>{{formatStatus user.status}}</span>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-bold">Thao tác:</label>
+                            {{!-- Tùy vào tình trạng tài khoản để render ra --}}
+                            <div class="account-detail__controls">
+                            {{#if user.isBlock}}
+                                {{!-- Tài khoản bị khóa --}}
+                                <div class="account-detail__control d-flex justify-content-center mb-2">
+                                    <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                                        data-target="#account-detail__modal" data-type="unlock">Mở khóa tài khoản</button>
+                                </div>
+                            {{else}}
+                                {{#switch user.status}}
+                                    {{#case 0}} 
+                                    {{!-- Tài khoản chờ kích hoạt --}}
+                                    <div class="account-detail__control d-flex justify-content-center mb-2">
+                                        <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="confirm">Xác minh</button>
+                                        <button type="button" class="mx-2 btn btn-danger" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="cancel">Hủy</button>
+                                        <button type="button" class="mx-2 btn btn-warning" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="complementary">Yêu cầu bổ xung</button>
+                                    </div>
+                                    {{/case}}
+                                    {{#case 1}} 
+                                    {{!-- Tài khoản đã kích hoạt --}}
+                                    <div class="account-detail__control d-flex justify-content-center mb-2">
+                                        <button type="button" class="mx-2 btn btn-danger" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="disable">Vô hiệu hóa tài khoản</button>
+                                    </div>
+                                    {{/case}}
+                                    {{#case 3}}
+                                    {{!-- Tài khoản bị vô hiệu --}}
+                                    <div class="account-detail__control d-flex justify-content-center mb-2">
+                                        <button type="button" class="mx-2 btn btn-success" data-toggle="modal"
+                                            data-target="#account-detail__modal" data-type="confirm">Kích hoạt tài khoản</button>
+                                    </div>
+                                    {{/case}}
+                                {{/switch}}
+                            {{/if}}
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Lịch sử giao dịch --}}
+            <div class="col-12 col-xl-7">
+                <h5>Lịch sử giao dịch</h5>
+                <div class="table-responsive">
+                    <table id="account-detail__talbe" class="table active">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 40px;">#</th>
+                                <th style="min-width: 150px;">Giao dịch</th>
+                                <th style="min-width: 100px;">Số tiền</th>
+                                <th style="min-width: 100px;">Thời gian</th>
+                                <th style="min-width: 120px;">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="account-detail__body-talbe">
+                        {{#if transactions.length}}
+                        {{#each transactions}}
+                            <tr class="account-table__item">
+                                <td class="align-middle">
+                                    {{#switch this.type}}
+                                    {{#case 0}}
+                                    {{!-- Nạp tiền --}}
+                                    <i class="icon--recharge fa-solid fa-file-invoice-dollar"></i>
+                                    {{/case}}
+                                    {{#case 1}}
+                                    {{!-- Rút tiền --}}
+                                    <i class="icon--withdraw fa-solid fa-money-check-dollar"></i>
+                                    {{/case}}
+                                    {{#case 2}}
+                                    {{!-- Chuyển tiền --}}
+                                    <i class="icon--transfer fa-solid fa-money-bill-transfer"></i>
+                                    {{/case}}
+                                    {{#case 3}}
+                                    {{!-- Thanh toán dịch vụ --}}
+                                    <i class="icon--payment fa-solid fa-money-bills"></i>
+                                    {{/case}}
+                                    {{/switch}}                                    
+                                </td>
+                                <td class="align-middle">
+                                    {{formatType this.type}}
+                                </td>
+                                <td class="align-middle">
+                                    {{formatMoney this.amount}}đ
+                                </td>
+                                <td class="account-table__item-status">
+                                    {{formatDate this.createdAt}}
+                                </td>
+                                <td class="align-middle">
+                                    {{#switch this.status}}
+                                    {{#case 0}}
+                                        <b class="text-success">Thành công</b>
+                                    {{/case}}
+                                    {{#case 1}}
+                                        <b class="text-danger">Hủy</b>
+                                    {{/case}}
+                                    {{#case 2}}
+                                        <b class="text-secondary">Chờ duyệt</b>
+                                    {{/case}}
+                                    {{#case 3}}
+                                        <b class="text-secondary">Chờ xác thực</b>
+                                    {{/case}}
+                                    {{/switch}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        {{else}}
+                            <tr class="account-table__item">
+                                <td class="align-middle text-center" colspan="5">Hiện tại tài khoản chưa có giao dịch nào.</td>
+                            </tr>
+                        {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+                {{#if transactions.length}}
+                <div class="d-flex justify-content-center mt-4">
+                    <button id="account-detail__transactions-load-btn" type="button" class="btn btn-primary">Xem
+                        thêm</button>
+                </div>
+                {{/if}}
+            </div>
+            {{else}}
+            <div class="col-12">
+                <h5 class="text-center">Người dùng không tồn tại!</h5>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+{{!-- Modal Message --}}
+<div class="modal fade" id="account-detail__modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="account-detail__modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="account-detail__modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success btn-submit" data-dismiss="modal">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="response__modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="response__modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

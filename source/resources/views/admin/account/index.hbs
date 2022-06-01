@@ -1,0 +1,65 @@
+<div class="account">
+    <h2 class="account-title">
+        Danh sách tài khoản
+    </h2>
+    <ul class="account-filters">
+        <li class="account-filter">
+            Trạng thái tài khoản:
+            <select name="" id="account-status-select">
+                <option value="wait-active">Chờ kích hoạt</option>
+                <option value="active">Đã kích hoạt</option>
+                <option value="disable">Bị vô hiệu hóa</option>
+                <option value="block">Bị khóa vô thời hạn</option>
+            </select>
+        </li>
+    </ul>
+    <div class="px-md-4">
+        <div class="table-responsive">
+            <table id="account-table" class="table wait-active">
+                <thead>
+                    <tr>
+                        <th style="min-width: 120px;">ID</th>
+                        <th style="min-width: 150px;">Tên tài khoản</th>
+                        <th style="min-width: 150px;">Số điện thoại</th>
+                        <th style="min-width: 120px;">Tình trạng</th>
+                        <th style="min-width: 120px;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="account-body-table">
+                    {{#each accounts}}
+                    <tr class="account-table__item">
+                        <td class="align-middle">
+                            <a href="/admin/accounts/{{this._id}}">
+                                <b>{{formatId this._id}}</b>
+                            </a>
+                        </td>
+                        <td class="align-middle">
+                            {{this.username}}
+                        </td>
+                        <td class="align-middle">
+                            {{this.phone}}
+                        </td>
+                        <td class="account-table__item-status align-middle">
+                            <b>{{formatStatus this.status}}</b>
+                        </td>
+                        <td class="align-middle">
+                            <a href="/admin/accounts/{{this._id}}" type="button" class="btn btn-outline-primary">
+                                Xem chi tiết
+                            </a>
+                        </td>
+                    </tr>
+                    {{else}}
+                    <tr class="account-table__item">
+                        <td class="align-middle text-center" colspan="5">Hiện tại không có tài khoản.</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{#if accounts.length}}
+    <div class="d-flex justify-content-center mt-4">
+        <button id="account-load-btn" type="button" class="btn btn-primary">Xem thêm</button>
+    </div>
+    {{/if}}
+</div>

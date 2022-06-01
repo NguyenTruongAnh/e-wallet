@@ -1,0 +1,176 @@
+<div class="dashboard-wrapper user-transaction-detail">
+	<div class="container-fluid  dashboard-content">
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="page-header">
+					<h2 class="pageheader-title"><i class="fa fa-fw fa-file"></i> Chi tiết giao dịch </h2>
+				</div>
+			</div>
+		</div>
+        <a href="/transactions" class="d-inline-block mb-2">Quay lại</a>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                {{#if transaction}}
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="row user-transaction-detail__info">
+									<div class="col-12 col-md-6">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Mã giao dịch:</label>
+											<span>
+												{{transaction._id}}
+											</span>
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Ngày thực hiện:</label>
+											<span>{{formatDate transaction.createdAt}}</span>
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Số tiền:</label>
+											<span>{{formatMoney transaction.amount}}đ</span>
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Phí giao dịch:</label>
+											<span>{{formatMoney transaction.fee}}đ</span>
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Loại giao dịch:</label>
+											<span>{{formatType transaction.type}}</span>
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Tình trạng:</label>
+                                            {{#switch transaction.status}}
+                                                {{#case 0}}
+                                                    <span class="text-success"><b>Thành công</b></span>
+                                                {{/case}}
+                                                {{#case 1}}
+                                                    <span class="text-danger"><b>Bị hủy</b></span>
+                                                {{/case}}
+                                                {{#case 2}}
+                                                    <span class="text-secondary"><b>Chờ duyệt</b></span>
+                                                {{/case}}
+                                            {{/switch}}
+										</div>
+									</div>
+                                    {{#ifWithObj transaction.type 3 transaction}}
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-group mb-2">
+                                                <label class="font-weight-bold">Nhà mạng:</label>
+                                                <span>{{nameCardPhone}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-group mb-2">
+                                                <label class="font-weight-bold">Loại thẻ:</label>
+                                                <span>{{formatMoney typeCardPhone}}đ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="form-group mb-2">
+                                                <label class="font-weight-bold">Số lượng:</label>
+                                                <span class="text-secondary">{{numberCardPhone}}</span>
+                                            </div>
+                                        </div>
+                                    {{/ifWithObj}}
+                                    {{#ifWithObj transaction.type 0 transaction}}
+                                        <div class="col-12">
+											<div class="form-group mb-2">
+												<label class="font-weight-bold">Mã thẻ tín dụng:</label>
+												<span>{{idCard}}</span>
+											</div>
+										</div>
+                                    {{/ifWithObj}}
+                                    {{#ifWithObj transaction.type 1 transaction}}
+                                        <div class="col-12">
+											<div class="form-group mb-2">
+												<label class="font-weight-bold">Mã thẻ tín dụng:</label>
+												<span>{{idCard}}</span>
+											</div>
+										</div>
+                                    {{/ifWithObj}}
+                                    {{#ifWithObj transaction.type 2 transaction}}
+                                        {{#ifWithObj checkReceiver true this}}
+                                        <div class="col-6">
+											<div class="form-group mb-2">
+												<label class="font-weight-bold">Số điện thoại người gửi:</label>
+												<span>{{senderPhone}}</span>
+											</div>
+										</div>
+                                        {{else}}
+                                        <div class="col-6">
+											<div class="form-group mb-2">
+												<label class="font-weight-bold">Số điện thoại người nhận:</label>
+												<span>{{receiverPhone}}</span>
+											</div>
+										</div>
+                                        {{/ifWithObj}}
+                                        <div class="col-6">
+											<div class="form-group mb-2">
+												<label class="font-weight-bold">Số điện thoại người trả phí:</label>
+												{{#ifWithObj whoPayFee 1 this}}
+                                                <span>{{receiverPhone}}</span>
+                                                {{else}}
+                                                <span>{{senderPhone}}</span>
+                                                {{/ifWithObj}}
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group mb-2">
+												<label class="font-weight-bold">Lời nhắn:</label>
+												<textarea name="" id="" rows="3" readonly>{{note}}</textarea>
+											</div>
+										</div>
+                                    {{/ifWithObj}}
+                                    {{#if transaction.cardPhoneList.length}}
+                                    <div class="col-12">
+										<div class="form-group mb-2">
+											<label class="font-weight-bold">Thông tin thẻ:</label>
+											<div class="table-responsive">
+												<table id="user-card__result-table"
+													class="table table-striped table-bordered second"
+													style="width:100%">
+													<thead>
+														<tr>
+															<th>Mã thẻ</th>
+															<th>Nhà mạng</th>
+															<th>Giá tiền</th>
+														</tr>
+													</thead>
+													<tbody id="user-card__result-table-body">
+                                                        {{#Each transaction.cardPhoneList transaction.nameCardPhone transaction.typeCardPhone}}
+                                                        <tr>
+															<td>{{this.value}}</td>
+															<td>{{this.name}}</td>
+															<td>{{formatMoney this.price}}đ</td>
+														</tr>
+                                                        {{/Each}}
+													</tbody>
+												</table>
+											</div>
+										</div>
+                                    </div>
+                                    {{/if}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                {{else}}
+                <div>Giao dịch không tồn tại. Nhấn vào nút quay lại ở trên để trở về trang lịch sử giao dịch.</div>
+                {{/if}}
+			</div>
+		</div>
+	</div>
+</div>

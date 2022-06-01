@@ -1,14 +1,14 @@
 const Account = require('../models/Account')
-const User = require('../models/User')
-const Transaction = require('../models/Transaction')
-const OTP = require('../models/OTP')
 const CreditCard = require('../models/CreditCard')
-const { mongooseToObject } = require('../../util/mongoose')
+const Transaction = require('../models/Transaction')
+const User = require('../models/User')
+const OTP = require('../models/OTP')
+const { mutipleMongooseToObject, mongooseToObject } = require('../../util/mongoose')
 const { formatResponse } = require('../../util/response')
+const bcrypt = require('bcrypt')
 const fs = require('fs')
 const path = require('path')
 const { createRandomString, createRandomNumber } = require('../../lib/random')
-const bcrypt = require('bcrypt')
 const transporter = require('../../config/mail/transporter')
 const moment = require('moment')
 
@@ -31,7 +31,7 @@ class UserController {
         const totalPayment = type * number // Tổng tiền thẻ cào
 
         if (amount >= totalPayment) {
-            let cardNetworkCode = '11111' // Mã nhà mạng, mặc định là 1111 của Viettel
+            let cardNetworkCode = '11111' // Mã nhà mạng, mặc định là 11111 của Viettel
             let cardPhoneList = []
 
             if (name.toLowerCase() === 'mobifone') {
@@ -70,7 +70,7 @@ class UserController {
             newTransaction.save()
 
             return res.json(formatResponse(0, `Mua thẻ thành công, số dư tài khoản hiện tại là: ${formatter.format(req.session.account.amount)}đ`
-                            , { name, type, cardPhoneList }))
+                , { name, type, cardPhoneList }))
         } else {
             return res.json(formatResponse(1, 'Số dư tài khoản không đủ để thực hiện giao dịch'))
         }
@@ -81,14 +81,79 @@ class UserController {
         res.render('user/deposit.hbs', { layout: 'userLayout', title: 'AVAT - Nạp tiền' })
     }
 
+    // [POST] /deposit
+    async deposit(req, res, next) {
+        const { idCard, cvv, expireDate, amount } = req.body
+        const creditCard = await CreditCard.findOne({ idCard })
+
+        // Kiểm tra thẻ
+        if (creditCard) {
+            // Kiểm tra mã cvv  
+            if (cvv === creditCard.cvv) {
+                // Kiểm tra ngày hết hạn 
+                const date1 = new Date(expireDate)
+                const date2 = new Date(creditCard.expireDate)
+                if (date1.getTime() === date2.getTime()) {
+                    // Kiểm tra số tiền nạp cho thẻ 2
+                    if (idCard === '222222' && amount > 1000000) {
+                        return res.json(formatResponse(1, 'Số tiền tối đa có thể nạp là 1 triệu/lần'))
+                    }
+
+                    if (idCard === '333333') {
+                        return res.json(formatResponse(1, 'Thẻ hết tiền.'))
+                    }
+                    const transaction = new Transaction({
+                        type: 0,
+                        idCard,
+                        amount,
+                        status: 0,
+                        senderPhone: req.session.account.phone
+                    })
+                    transaction.save()
+                        .catch(() => res.json(formatResponse(1, 'Nạp tiền thất bại.')))
+                    req.session.account.amount += parseInt(amount)
+                    Account.findByIdAndUpdate({ _id: req.session.account._id },
+                        { amount: req.session.account.amount }, { new: true })
+                        .then(() => res.json(formatResponse(0, 'Nạp tiền thành công.', req.session.account.amount)))
+                        .catch(() => res.json(formatResponse(1, 'Nạp tiền thất bại.')))
+                } else {
+                    res.json(formatResponse(1, 'Ngày hết hạn không chính xác.'))
+                }
+            } else {
+                res.json(formatResponse(1, 'Mã CVV không chính xác.'))
+            }
+        } else {
+            res.json(formatResponse(1, 'Thẻ này không được hỗ trợ.'))
+        }
+    }
+
     // [GET] /transactions/:id
-    getTransactionById(req, res, next) {
-        res.render('user/detailtransaction.hbs', { layout: 'userLayout', title: 'AVAT - Chi tiết giao dịch' })
+    async getTransactionById(req, res, next) {
+        let transaction = await Transaction.findById({ _id: req.params.id })
+        transaction = mongooseToObject(transaction)
+        // Thêm một trường xác định người gửi hay người nhận phục vụ cho việc render
+        if (transaction.type === 2 && transaction.receiverPhone === req.session.account.phone) {
+            transaction.checkReceiver = true
+        } else {
+            transaction.checkReceiver = false
+        }
+        res.render('user/detailtransaction.hbs', { layout: 'userLayout', title: 'AVAT - Chi tiết giao dịch', transaction })
     }
 
     // [GET] /transactions
-    getTransactions(req, res, next) {
-        res.render('user/transactionhistory.hbs', { layout: 'userLayout', title: 'AVAT - Lịch sử giao dịch' })
+    async getTransactions(req, res, next) {
+        const phone = req.session.account.phone
+        let transactions = await Transaction.find({
+            $or: [{ senderPhone: phone },
+            { receiverPhone: phone }],
+            status: { $lt: 3 }
+        }).sort({ createdAt: -1 })
+        transactions = mutipleMongooseToObject(transactions)
+        transactions.forEach((transaction, index) => {
+            if(transaction.type === 2 && transaction.receiverPhone === phone && transaction.status === 1)
+                transactions.splice(index,1)
+        })
+        res.render('user/transactionhistory.hbs', { layout: 'userLayout', title: 'AVAT - Lịch sử giao dịch', transactions })
     }
 
     // [GET] /transfer
@@ -109,7 +174,7 @@ class UserController {
         }
 
         if (receiverPhone === req.session.account.phone) {
-            res.json(formatResponse(1, 'Bạn không thể tự chuyển tiền cho chính mình'))
+            return res.json(formatResponse(1, 'Bạn không thể tự chuyển tiền cho chính mình'))
         }
 
         const receiverAccount = await Account.findOne({ phone: receiverPhone })
@@ -227,7 +292,7 @@ class UserController {
                     const receiverAccount = await Account.findOne({ phone: receiverPhone })
                     receiverAccount.amount = receiverAccount.amount + amount
 
-                    // Kiểm tra xem có phải người nhận trả
+                    // Kiểm tra xem có phải người 
                     if (whoPayFee === 1) {
                         receiverAccount.amount = receiverAccount.amount - fee
                     }
@@ -290,14 +355,16 @@ class UserController {
         const { cardId, cardCVV, expiredDate, note } = req.body
         const amount = parseInt(req.body.amount)
         const fee = parseInt(req.body.fee)
-        const totalAmount = amount + fee 
+        const totalAmount = amount + fee
 
         const today = moment().startOf('day')
 
-        const todayTransactions = await Transaction.find({ createdAt: {
-            $gte: today.toDate(),
-            $lte: moment(today).endOf('day').toDate()
-        }, senderPhone: req.session.account.phone, type: 1 })
+        const todayTransactions = await Transaction.find({
+            createdAt: {
+                $gte: today.toDate(),
+                $lte: moment(today).endOf('day').toDate()
+            }, senderPhone: req.session.account.phone, type: 1
+        })
 
         // Kiểm tra xem đã thực hiện hết số giao dịch rút tiền trong ngày chưa
         if (todayTransactions.length < 2) {
@@ -311,7 +378,7 @@ class UserController {
 
                 if (creditCard.idCard === cardId && creditCard.cvv === cardCVV && date1.getTime() === date2.getTime()) {
                     let message // Lưu tin nhắn trả về giao diện người dùng
-    
+
                     // Tạo một giao dịch mới
                     const newTransaction = new Transaction({
                         type: 1,
@@ -321,28 +388,28 @@ class UserController {
                         fee: fee,
                         senderPhone: req.session.account.phone
                     })
-    
+
                     // Kiểm tra số tiền rút có trên 5tr không, nếu có thì phải chờ được duyệt
                     if (amount > 5000000) {
                         newTransaction.status = 2
-    
+
                         message = 'Giao dịch đã được ghi nhận, đang chờ được duyệt'
                     } else {
                         newTransaction.status = 0
-    
+
                         // Cập nhật lại số dư trong tài khoản người dùng
                         const account = await Account.findById(req.session.account._id)
-    
+
                         req.session.account.amount = req.session.account.amount - totalAmount
                         account.amount = req.session.account.amount
-    
+
                         account.save()
-    
+
                         message = `Rút tiền thành công, số dư tài khoản hiện tại là: ${formatter.format(req.session.account.amount)}đ`
                     }
-    
+
                     newTransaction.save()
-    
+
                     return res.json(formatResponse(0, message))
                 } else {
                     return res.json(formatResponse(1, 'Thông tin thẻ không hợp lệ'))
@@ -360,6 +427,22 @@ class UserController {
         res.render('user/password.hbs', { layout: 'userLayout', title: 'AVAT - Đổi mật khẩu' })
     }
 
+    // [PUT] /change-password
+    async changePassword(req, res, next) {
+        let { oldPassword, newPassword } = req.body
+        const comparePassword = bcrypt.compareSync(oldPassword, req.session.account.password)
+        if (!comparePassword) {
+            return res.json(formatResponse(1, 'Mật khẩu cũ không chính xác.'))
+        } else {
+            const salt = await bcrypt.genSalt(10);
+            newPassword = await bcrypt.hash(newPassword, salt);
+            req.session.account.password = newPassword
+            Account.findByIdAndUpdate({ _id: req.session.account._id }, { password: newPassword }, { new: true })
+                .then(() => res.json(formatResponse(0, 'Đổi mật khẩu thành công')))
+                .catch(() => res.json(formatResponse(1, 'Đổi mật khẩu thất bại')))
+        }
+    }
+
     // [GET] /logout
     logout(req, res, next) {
         req.session.destroy(err => {
@@ -369,6 +452,38 @@ class UserController {
             res.clearCookie('AVAT')
             res.redirect('/login')
         })
+    }
+
+    // [GET] /
+    async index(req, res, next) {
+        const { email, status, username, amount } = req.session.account
+        const accountId = req.session.account._id
+        const data = await User.findOne({ email: email })
+        const user = mongooseToObject(data)
+        let flash
+
+        user.status = status
+        user.accountId = accountId
+        user.username = username
+        user.amount = amount
+
+        if (status === 0) {
+            flash = {
+                type: 'warning',
+                intro: 'Thông báo!',
+                message: `Tài khoản đang chờ kích hoạt. Các tính năng nâng cao chưa thể sử dụng.`
+            }
+        }
+
+        if (status === 2) {
+            flash = {
+                type: 'danger',
+                intro: 'Thông báo!',
+                message: `Tài khoản cần cập nhật lại hình ảnh CMND/CCCD.`
+            }
+        }
+
+        res.render('user/profile.hbs', { layout: 'userLayout', title: 'AVAT - Thông tin tài khoản', user, flash })
     }
 
     // [PUT] /profile-update
@@ -406,38 +521,6 @@ class UserController {
                 return res.json(formatResponse(1, 'Cập nhật ảnh thất bại, vui lòng thử lại'))
             })
 
-    }
-
-    // [GET] /
-    async index(req, res, next) {
-        const { email, status, username, amount } = req.session.account
-        const accountId = req.session.account._id
-        const data = await User.findOne({ email: email })
-        const user = mongooseToObject(data)
-        let flash
-
-        user.status = status
-        user.accountId = accountId
-        user.username = username
-        user.amount = amount
-
-        if (status === 0) {
-            flash = {
-                type: 'warning',
-                intro: 'Thông báo!',
-                message: `Tài khoản đang chờ kích hoạt.`
-            }
-        }
-
-        if (status === 2) {
-            flash = {
-                type: 'danger',
-                intro: 'Thông báo!',
-                message: `Tài khoản cần cập nhật lại hình ảnh CMND/CCCD.`
-            }
-        }
-
-        res.render('user/profile.hbs', { layout: 'userLayout', title: 'AVAT - Thông tin tài khoản', user, flash })
     }
 }
 

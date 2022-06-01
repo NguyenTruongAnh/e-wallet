@@ -1,0 +1,62 @@
+<div class="dashboard-wrapper">
+    <div class="container-fluid  dashboard-content">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử giao dịch </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <h5 class="card-header">Danh sách các giao dịch đã thực hiện </h5>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Thời gian</th>
+                                        <th>Loại giao dịch</th>
+                                        <th>Số tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each transactions}}
+                                    <tr>
+                                        <td>{{formatDateTime this.createdAt}}</td>
+                                        <td>{{formatType this.type}}</td>
+                                        <td>{{formatMoney this.amount}}đ</td>
+                                        <td>
+                                            {{!--Render theo trạng thái tương ứng --}}
+                                            {{#switch this.status}}
+                                                {{#case 0}}
+                                                    <span class="badge bg-success text-white">Thành công</span>
+                                                {{/case}}
+                                                {{#case 1}}
+                                                    <span class="badge bg-danger text-white">Hủy</span>
+                                                {{/case}}
+                                                {{#case 2}}
+                                                    <span class="badge bg-warning text-white">Chờ duyệt</span>
+                                                {{/case}}
+                                            {{/switch}}
+                                        </td>
+                                        <td><a href="/transactions/{{this._id}}">Xem chi tiết</a></td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td class="align-middle text-center" colspan="5">Tài khoản chưa có giao dịch nào.</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
